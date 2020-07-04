@@ -2,6 +2,7 @@ Project.destroy_all
 User.destroy_all
 Collaboration.destroy_all
 Task.destroy_all
+Ownership.destroy_all
 
 anh = User.create(username: "anh123")
 ge = User.create(username: "ge123")
