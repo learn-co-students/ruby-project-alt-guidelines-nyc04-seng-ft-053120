@@ -10,9 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_04_194655) do
+ActiveRecord::Schema.define(version: 2020_07_04_224555) do
 
   create_table "collaborations", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "project_id"
+  end
+
+  create_table "ownerships", force: :cascade do |t|
     t.integer "user_id"
     t.integer "project_id"
   end
