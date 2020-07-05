@@ -1,3 +1,6 @@
 require_relative '../config/environment'
 
-puts "hello world"
+main_interface = Main.new{}
+main_interface.welcome
+
+
