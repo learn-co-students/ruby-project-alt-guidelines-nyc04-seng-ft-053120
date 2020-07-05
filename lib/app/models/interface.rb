@@ -317,7 +317,7 @@ class Interface
         menu.choice "Go Back to Main Menu", -> { self.main_menu }
       end
     else
-      Collaborator.create(user: self, project: project)
+      Collaboration.create(user: self, project: project)
       puts "Nice! You are not a collaborator for #{project.name}!"
       prompt.select("\n") do |menu|
         menu.choice "Take Me to Project Menu", -> { self.project_menu_page(project) }
