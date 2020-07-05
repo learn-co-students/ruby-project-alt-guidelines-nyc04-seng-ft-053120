@@ -1,1 +1,3 @@
-
+ class Interface
+    
+ end
