@@ -1,0 +1,3 @@
+class Dogg
+    
+end
