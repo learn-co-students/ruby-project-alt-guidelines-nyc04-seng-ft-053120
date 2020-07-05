@@ -1,5 +1,4 @@
 #interacts and gets info/data from user
-
 class Interface 
     attr_accessor :prompt, :user
     
@@ -7,8 +6,9 @@ class Interface
         @prompt = TTY::Prompt.new
     end
 
-    def welcome
+    
 
+    def welcome
         puts "
 
        .--.           .---.        .-.
@@ -24,17 +24,16 @@ class Interface
     end
 
     def choose_login_or_register
-        answer = self.prompt.select("Logging in or registering?", [
-            "Log in",
-            "Register"
-        ])
-
-        if answer == "Log in"
-            #User.logging_someone_in
-            puts "Logging in"
-        elsif answer == "Register"
-            #User.create_a_new_user
-            puts "Registering"
+        prompt.select("Log in or register?") do |menu|
+            menu.choice "Log In", -> { User.logging_someone_in }
+            menu.choice "Register", -> { User.create_new_user }
         end
     end
-end
+
+    def main_menu
+        if user.name == nil 
+            return exit 
+        end
+        puts "Welcome to Book Club #{user.name}!"
+    end
+end   

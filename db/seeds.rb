@@ -51,3 +51,5 @@ Review.create(
     user_id: 5,
     book_id: 5
 )
+
+puts "Done seeding!"

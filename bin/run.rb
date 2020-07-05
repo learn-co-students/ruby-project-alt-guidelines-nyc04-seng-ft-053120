@@ -2,6 +2,11 @@ require_relative '../config/environment'
 
 interface = Interface.new()
 interface.welcome 
-interface.choose_login_or_register
+user_instance = interface.choose_login_or_register
+interface.user = user_instance
 
-puts "Hello World"
+interface.main_menu
+
+puts "Hello World" 
+#Paint['Ruby', :red, :blue]
+
