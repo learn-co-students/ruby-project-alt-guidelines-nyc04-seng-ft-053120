@@ -343,6 +343,7 @@ class Interface
       puts "You're no longer a collaborator for #{project_selected.name}."
       collaboration.delete
       prompt.select("\n") { |menu| menu.choice "Go Back to Main Menu", -> { self.main_menu } }
+    end
   end
 
   def projects_i_created_page
@@ -376,32 +377,33 @@ class Interface
       menu.choice "Add a Collaborator\n", -> { self.add_collaborator_page(new_project) }
       menu.choice "Go Back to Main Menu", -> { self.main_menu }
     end
+  end 
 
-    def edit_project_name_page(project)
-      header
-      puts "EDIT PROJECT NAME - #{project.name}"
-      puts
-      new_name = prompt.ask("♥ Enter a new name for the project: ")
-      project.name = new_name
-      project.save
-      puts "Project's name has been changed to '#{project.name}'"
+  def edit_project_name_page(project)
+    header
+    puts "EDIT PROJECT NAME - #{project.name}"
+    puts
+    new_name = prompt.ask("♥ Enter a new name for the project: ")
+    project.name = new_name
+    project.save
+    puts "Project's name has been changed to '#{project.name}'"
 
-      prompt.select("\n") do |menu|
-        menu.choice "Go Back to Project Owner Page", -> { self.project_owner_page(project) }
-        menu.choice "Go Back to Main Menu", -> { self.main_menu }
-      end
-    end
-
-    def edit_project_description_page(project)
-      new_description = prompt.ask("♥ Enter a new description for the project:")
-      project.description = new_description
-      project.save
-      puts "Project's description has been changed to '#{project.description}'"
-
-      prompt.select("\n") do |menu|
-        menu.choice "Go Back to Project Owner Page", -> { self.project_owner_page(project) }
-        menu.choice "Go Back to Main Menu", -> { self.main_menu }
-      end
+    prompt.select("\n") do |menu|
+      menu.choice "Go Back to Project Owner Page", -> { self.project_owner_page(project) }
+      menu.choice "Go Back to Main Menu", -> { self.main_menu }
     end
   end
+
+  def edit_project_description_page(project)
+    new_description = prompt.ask("♥ Enter a new description for the project:")
+    project.description = new_description
+    project.save
+    puts "Project's description has been changed to '#{project.description}'"
+
+    prompt.select("\n") do |menu|
+      menu.choice "Go Back to Project Owner Page", -> { self.project_owner_page(project) }
+      menu.choice "Go Back to Main Menu", -> { self.main_menu }
+    end
+  end
+  
 end
