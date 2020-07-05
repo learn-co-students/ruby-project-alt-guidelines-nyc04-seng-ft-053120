@@ -13,12 +13,13 @@ end
 5.times do
     User.create(
         name: Faker::Name.unique.name,
-        age: rand(18..100)
+        age: rand(18..100),
+        display_name: Faker::Superhero.name
     )
 end
 
 Review.create(
-    comment: Faker::Books::Lovecraft.sentence,
+    comment: Faker::Books::Lovecraft.paragraph,
     rating: rand(0..10),
     user_id: 1,
     book_id: 1
