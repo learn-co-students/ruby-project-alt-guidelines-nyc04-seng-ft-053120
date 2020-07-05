@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 2020_07_04_214136) do
 
   create_table "minions", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "minions_counter"
+    t.integer "minion_counter"
   end
 
   create_table "users", force: :cascade do |t|
