@@ -7,5 +7,3 @@ interface.user = user_instance
 
 interface.main_menu
 
-puts "Hello World"
-

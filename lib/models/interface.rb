@@ -31,9 +31,6 @@ class Interface
     end
 
     def main_menu
-        if user.name == nil 
-            return exit 
-        end
         puts "Welcome to Book Club #{user.name}!"
     end
 end   
