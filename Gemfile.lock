@@ -24,7 +24,6 @@ GEM
     minitest (5.13.0)
     mustermann (1.0.3)
     necromancer (0.5.1)
-    paint (2.2.0)
     pastel (0.7.4)
       equatable (~> 0.6)
       tty-color (~> 0.5)
@@ -68,7 +67,6 @@ PLATFORMS
 DEPENDENCIES
   activerecord (~> 5.2)
   faker
-  paint
   pry
   rake
   require_all
