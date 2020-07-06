@@ -37,7 +37,7 @@ class Main
     #     end
     #     ((ENV['LINES'].to_i-2)/2-9).times do puts (" ")*window_l).colorize(:color => :light_yellow, :background => :black) end
     # end
-    def welcome
+    def self.welcome
         puts ' 
             ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░                                
             ░░░░▄██████████████████████▄░░░░                                 
@@ -85,6 +85,12 @@ Welcome to our application!
         elsif answer == "Register"
             User.create_a_new_user
         end
+    end
+
+    def self.bmo
+        system ('clear')
+        Main.welcome
+        
     end
 
     def main_interface

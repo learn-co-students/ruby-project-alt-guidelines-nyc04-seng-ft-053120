@@ -2,7 +2,9 @@ require_relative '../config/environment'
 
 main_interface = Main.new{}
 
-main_interface.welcome
+Main.welcome
+
 main_interface.login_register_prompt
+
 
 

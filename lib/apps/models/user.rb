@@ -4,33 +4,40 @@ class User < ActiveRecord::Base
     has_many :like
     
     def self.check_user
-        random_usernames = ["PowerpuffGirl279", "WedgeBiggs007", "YogaPosePretzel", "NoForksGiven","KanyeForPresident","CoffeeDaddy", "HobbitFeet429", "Mordor69", "Raffyisbae", "CharmanderCHARBOK", "TeenageMutantNinjaSquirtles", "Raffyisagoodboy", "RaffyAteMyLab", "ChuckNorrisLover"].sample
+        random_usernames = ["PowerpuffGirl279", "WedgeBiggs007", "AlveeRules", "YogaPosePretzel", "NoForksGiven","KanyeForPresident","CoffeeDaddy", "HobbitFeet429", "Mordor69", "Raffyisbae", "CharmanderCHARBOK", "TeenageMutantNinjaSquirtles", "Raffyisagoodboy", "RaffyAteMyLab", "ChuckNorrisLover"].sample
         prompt = TTY::Prompt.new
         username = prompt.ask("what would you like your username to be?")
         if User.find_by(user_name: username)
             puts "~~~~~~Sorry that user name was taken, how about you try: #{random_usernames}~~~~~"
             self.check_user 
-            
-        elsif
+        else
             username
         end
     end
-    
+
+    def self.bmo_come_back
+        Main.welcome
+        system 'clear'
+    end
     
     
 def self.log_someone_in
+    Main.bmo
     prompt = TTY::Prompt.new
     username = prompt.ask("what is your username?")
     pass = self.password_prompt
     if found_user = User.find_by(user_name: username) && User.find_by(password: pass)
         puts "Welcome back #{username} today is #{Time.now} "
         found_user.display_profile
-    elsif
+    else
         puts "your username or password are incorrect."
+        
+        self.log_someone_in
     end
     end
 
 def self.create_a_new_user
+    Main.bmo
     prompt = TTY::Prompt.new
     username = self.check_user
     
@@ -46,8 +53,10 @@ def self.create_a_new_user
     
     new_user = User.create(user_name: username, password: pass, cohort: cohort)
     puts "Welcome #{username},                                   \nyour password is #{pass} don't lose it,               \nbecause we have no way of retrieving it for you... \noh and ummm you now belong to us. #{cohort}         ".white.on_red.blink
-    new_user.display_profile
+    #new_user.display_profile
 end
+
+
 
 def self.password_prompt
     prompt = TTY::Prompt.new
@@ -61,18 +70,17 @@ end
 
 
 
-def display_profile
+# def display_profile
 
-    prompt = TTY::Prompt.new  
-    renderer = TTY::Table::Renderer::ASCII.new(user_table)
+#     prompt = TTY::Prompt.new  
+#     renderer = TTY::Table::Renderer::ASCII.new(user_table)
      
     
-end
+# end
 
-def user_table
-    array = [self]
-    binding.pry
-end
+# def user_table
+#     array = [self]
+# end
 
 
 
