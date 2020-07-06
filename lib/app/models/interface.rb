@@ -292,10 +292,10 @@ class Interface
     # Performs validation check for the str the user entered
 
     # Format_ok will return true if str matches the date regex pattern
-    format_ok = str.match(/\d{2}-\d{2}-\d{4}/) 
+    format_ok = str.match(/\d{2}\/\d{2}\/\d{4}/) 
 
     # If the str cannot be parsed into a date, an error will result, but it will be rescue with a false return
-    parseable = Date.strptime(str, '%m-%d-%Y') rescue false 
+    parseable = Date.strptime(str, '%m/%d/%Y') rescue false 
 
     # Will return true if format is good and string is parseable
     format_ok && parseable
@@ -304,10 +304,10 @@ class Interface
   def prompt_for_date
     # Prompts user for the date, output the date
 
-    date_input = prompt.ask("♥ Enter due date in MM-DD-YYYY format: ")
+    date_input = prompt.ask("♥ Enter due date in MM/DD/YYYY format: ")
     if validate_date(date_input)
       # If the date the user input is valid, return the new datetime created
-      month, day, year = date_input.split("-").map { |s| s.to_i }
+      month, day, year = date_input.split("/").map { |s| s.to_i }
       Time.new(year, month, day)
     else
       # Otherwise prompt for the date again
