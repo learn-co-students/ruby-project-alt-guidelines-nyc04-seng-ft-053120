@@ -1,3 +1,5 @@
+require 'date'
+
 class Interface
   attr_accessor :prompt, :user
 
@@ -81,7 +83,7 @@ class Interface
     puts "♥ Welcome, #{user.username}. It's a great day to get some work done!"
     puts
 
-    prompt.select("♥ Select an option:\n", cycle: true) do |menu|
+    prompt.select("♥ SELECT AN OPTION:\n", cycle: true) do |menu|
       menu.choice "View My Current Projects", -> { view_current_projects_page }
       menu.choice "Create a New Project", -> { create_a_new_project_page }
       menu.choice "Collaborate On An Existing Project", -> { collaborate_on_an_existing_project_page }
@@ -206,13 +208,13 @@ class Interface
     else
       all_tasks.each do |task|
         completion_status = "Not Yet!"
-        completion_status = "Yep!" if task.completed
+        completion_status = "Yep!" if task.completed 
+        puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        puts
         puts "TASK → #{task.description}"
         puts "Being Done By → #{task.user.username}"
         puts "Completed? → #{completion_status}"
         puts "Due On → #{task.due_date.strftime("%m/%d/%Y")}"
-        puts 
-        puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         puts
       end
     end
@@ -286,15 +288,39 @@ class Interface
     end
   end
 
+  def validate_date(str)
+    # Performs validation check for the str the user entered
+
+    # Format_ok will return true if str matches the date regex pattern
+    format_ok = str.match(/\d{2}-\d{2}-\d{4}/) 
+
+    # If the str cannot be parsed into a date, an error will result, but it will be rescue with a false return
+    parseable = Date.strptime(str, '%m-%d-%Y') rescue false 
+
+    # Will return true if format is good and string is parseable
+    format_ok && parseable
+  end
+  
+  def prompt_for_date
+    # Prompts user for the date, output the date
+
+    date_input = prompt.ask("♥ Enter due date in MM-DD-YYYY format: ")
+    if validate_date(date_input)
+      # If the date the user input is valid, return the new datetime created
+      month, day, year = date_input.split("-").map { |s| s.to_i }
+      Time.new(year, month, day)
+    else
+      # Otherwise prompt for the date again
+      puts "\nDate invalid, please try again"
+      puts
+      prompt_for_date
+    end
+  end
+
   def change_due_date(project, task)
     header
-    puts "♥ Enter new due date for task"
-
-    month = (prompt.ask("Enter digit(s) month:")).to_i
-    day = (prompt.ask("Enter digit(s) day: ")).to_i
-    year = (prompt.ask("Enter 4 digits year: ")).to_i
-
-    new_date = Time.new(year, month, day)
+  
+    new_date = prompt_for_date
     task.change_due_date(new_date)
 
     puts "\nTask due date updated!"
@@ -312,11 +338,7 @@ class Interface
     puts
     task_description = prompt.ask("♥ Enter task description: ")
     puts 
-    puts "♥ Enter a due date"
-    month = (prompt.ask("Enter digit(s) month: ")).to_i
-    day = (prompt.ask("Enter digit(s) day: ")).to_i
-    year = (prompt.ask("Enter 4 digits year: ")).to_i
-    task_due_date = Time.new(year, month, day)
+    task_due_date = prompt_for_date
 
     Task.create(description: task_description, completed: false, due_date: task_due_date, project: project, user: user)
 
@@ -382,7 +404,7 @@ class Interface
     puts "PROJECTS I CREATED\n\n"
     projects_owned = Project.select { |project| project.user == user }
     if projects_owned.empty?
-      puts "You haven't created any project yet"
+      puts "You haven't created any project yet."
       prompt.select("\n") do |menu|
         menu.choice "Create a New Project", -> { create_a_new_project_page }
         menu.choice "Go Back to Main Menu", -> { main_menu }
