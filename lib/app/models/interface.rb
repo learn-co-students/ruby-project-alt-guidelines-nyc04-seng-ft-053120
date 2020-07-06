@@ -18,7 +18,8 @@ class Interface
     "
   end
 
-  def log_in_page
+  def log_in_or_register_page
+    # Welcome user and display choices for Log In or Register
     header
     puts "------------- Welcome to Twogether, A CLI Project Collaboration App -------------"
     puts 
@@ -29,49 +30,65 @@ class Interface
     end
   end
 
-  
-
   def log_in
+    # Prompt for username input, find username in database, if the username doesn't exist in the database, output message telling user so; if username is found, present choice to take user to main menu
     username_input = prompt.ask("\n♥ Enter Username: ")
     user_found = User.find_by(username: username_input)
     if !user_found
       puts "\nSorry, that username doesn't exist"
-      prompt.select(" ") { |menu| menu.choice "Go Back", -> {log_in_page} }
+      prompt.select(" ") { |menu| menu.choice "Go Back", -> {log_in_or_register_page} }
     else
       @user = user_found
       puts "\nLog In Successful!"
-      prompt.select(" ") { |menu| menu.choice "Go To Main Menu", -> {main_menu} }
+      print "\nTaking you to main menu"
+      4.times do |i|
+        sleep(0.7)
+        print(".")
+      end
+      main_menu
     end
   end
 
   def register
+    # If the username is already in the database, puts message telling user so. Otherwise, take user to main menu.
     username_input = prompt.ask("\n♥ Pick A Username: ")
     user_found = User.find_by(username: username_input)
     if user_found
       puts "\nSorry, that username has been taken!"
-      prompt.select(" ") { |menu| menu.choice "Go Back", -> {self.log_in_page} }
+      print "\nTaking you back to log in menu"
+      4.times do |i|
+        sleep(0.7)
+        print(".")
+      end
+      log_in_or_register_page
     else
       new_user = User.create(username: username_input)
       @user = new_user
       puts "\nSign Up Successful!"
-      prompt.select(" ") { |menu| menu.choice "Go To Main Menu", -> {self.main_menu} }
+      print "\nTaking you to main menu"
+      4.times do |i|
+        sleep(0.7)
+        print(".")
+      end
+      main_menu
     end
   end
 
   def main_menu
+    # Displays options for user
     header
     puts "MAIN MENU"
     puts
     puts "♥ Welcome, #{user.username}. It's a great day to get some work done!"
     puts
 
-    prompt.select("♥ What would you like to do?\n", cycle: true) do |menu|
+    prompt.select("♥ Select an option:\n", cycle: true) do |menu|
       menu.choice "View My Current Projects", -> { view_current_projects_page }
       menu.choice "Create a New Project", -> { create_a_new_project_page }
       menu.choice "Collaborate On An Existing Project", -> { collaborate_on_an_existing_project_page }
       menu.choice "Remove Myself From A Project", -> { remove_from_project_page }
       menu.choice "See Projects I Created\n", -> { projects_i_created_page }
-      menu.choice "Log Out", -> { log_in_page }
+      menu.choice "Log Out", -> { log_in_or_register_page }
     end
   end
 
@@ -84,7 +101,7 @@ class Interface
     project_description_input = prompt.ask("♥ Enter a short description: ")
 
     new_project = user.create_new_project(project_name_input, project_description_input)
-    puts "New project: #{new_project.name}, has been successfully created!"
+    puts "\nNew project: \"#{new_project.name}\", has been successfully created!"
     puts
 
     prompt.select(" ", cycle: true) do |menu|
@@ -105,7 +122,7 @@ class Interface
     # If collaborator is already a collaborator on the project, puts message to tell user so
     if Collaboration.where(user: collaborator, project: new_project).exists?
       puts "\nThis collaborator is already a part of this project!"
-      promp.select(" ", cycle: true) do |menu|
+      prompt.select(" ", cycle: true) do |menu|
         menu.choice "Try Another Collaborator", -> { add_collaborator_page(new_project) }
         menu.choice "Go Back to Main Menu", -> { main_menu }
       end
@@ -117,7 +134,7 @@ class Interface
       end
     elsif collaborator
       Collaboration.create(user: collaborator, project: new_project)
-      puts "Collaborator, #{collaborator.username} has successfully been added to your project #{new_project.name}!"
+      puts "\nCollaborator, #{collaborator.username} has successfully been added to your project \"#{new_project.name}\"!"
       prompt.select(" ", cycle: true) do |menu|
         menu.choice "Add Another Collaborator", -> { add_collaborator_page(new_project) }
         menu.choice "Take me To Project Menu", -> { project_menu_page(new_project) }
@@ -133,7 +150,7 @@ class Interface
     puts 
 
     choices = Hash.new
-    user.projects.each { |project| choices[project.name] = project }
+    @user.projects.each { |project| choices[project.name] = project }
     
     if choices.empty?
       puts "You're not working on any project right now!"
@@ -161,7 +178,7 @@ class Interface
       menu.choice "View/Update My Tasks", -> { view_or_update_task_page(project) }
       menu.choice "Add a New Task", -> { add_a_new_task_page(project) }
       menu.choice "View All Project Collaborators\n", -> { see_all_project_collaborators_page(project) }
-      menu.choice "Go Back to View All Projects", -> { view_current_projects_page(project) }
+      menu.choice "Go Back to View All Projects", -> { view_current_projects_page }
       menu.choice "Go Back to Main Menu", -> { main_menu }
     end
   end
@@ -185,16 +202,22 @@ class Interface
     header
     puts "ALL PROJECT TASKS - #{project.name}"
     puts
-    project.tasks.order(:due_date).each do |task|
-      completion_status = "Not Yet!"
-      completion_status = "Yep!" if task.completed
-      puts "TASK → #{task.description}"
-      puts "Being Done By → #{task.user.username}"
-      puts "Completed? → #{completion_status}"
-      puts "Due On → #{task.due_date.strftime("%m/%d/%Y")}"
-      puts 
-      puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-      puts
+    all_tasks = project.tasks.order(:due_date)
+    
+    if all_tasks.empty?
+      puts "This project doesn't have any tasks right now.\n"
+    else
+      all_tasks.each do |task|
+        completion_status = "Not Yet!"
+        completion_status = "Yep!" if task.completed
+        puts "TASK → #{task.description}"
+        puts "Being Done By → #{task.user.username}"
+        puts "Completed? → #{completion_status}"
+        puts "Due On → #{task.due_date.strftime("%m/%d/%Y")}"
+        puts 
+        puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        puts
+      end
     end
 
     prompt.select("\n", cycle: true) do |menu|
@@ -324,7 +347,7 @@ class Interface
       puts "\nYou're already a part of this project!"
     else
       new_collaboration = Collaboration.create(user: user, project: project)
-      @user = new_collaboration.user
+      @user = Collaboration.find_by(user: user).user
       puts "\nNice! You are now a collaborator for \"#{project.name}\"!"
     end
 
@@ -383,7 +406,7 @@ class Interface
       menu.choice "Edit Project's Name", -> { edit_project_name_page(project) }
       menu.choice "Edit Project's Description", -> { edit_project_description_page(project) }
       menu.choice "See Collaborators", -> { see_all_project_collaborators_page(project) }
-      menu.choice "Add a Collaborator\n", -> { add_collaborator_page(new_project) }
+      menu.choice "Add a Collaborator\n", -> { add_collaborator_page(project) }
       menu.choice "Go Back to Main Menu", -> { main_menu }
     end
   end 
