@@ -76,15 +76,20 @@ Welcome to our application!
 
     def login_register_prompt
         answer = prompt.select("Are you logging in or registering?", [
-            "login",
+            "Login",
             "Register"
         ])
 
         if answer == "Login"
             User.log_someone_in
-        elseif answer == "Register"
-            User.create_new_user
+        elsif answer == "Register"
+            User.create_a_new_user
         end
     end
 
+    def main_interface
+           
+    end
+            
 end
+
