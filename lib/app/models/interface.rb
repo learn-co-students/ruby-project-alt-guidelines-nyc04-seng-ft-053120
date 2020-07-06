@@ -308,8 +308,8 @@ class Interface
     header
     puts "COLLABORATE ON AN EXISTING PROJECT"
     puts 
-    project_name = prompt.ask("Enter project name: ")
-    creator_name = prompt.ask("Enter username of project creator: ")
+    project_name = prompt.ask("♥ Enter project name: ")
+    creator_name = prompt.ask("♥ Enter username of project creator: ")
     project = Project.find_by(name: project_name)
     creator = User.find_by(username: creator_name)
 
@@ -341,7 +341,7 @@ class Interface
     if choices.empty?
       puts "You're not a part of any project right now."
     else
-      project_selected = prompt.select("Select a project to stop collaborating: ", choices)
+      project_selected = prompt.select("♥ Select a project to stop collaborating: ", choices)
       collaboration = Collaboration.find_by(user: user, project: project_selected)
       puts "You're no longer a collaborator for \"#{project_selected.name}\"."
       collaboration.destroy   
