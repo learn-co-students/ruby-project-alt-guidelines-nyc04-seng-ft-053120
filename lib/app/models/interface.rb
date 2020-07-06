@@ -391,11 +391,18 @@ class Interface
       puts "You're not a part of any project right now."
     else
       project_selected = prompt.select("♥ Select a project to stop collaborating: ", choices)
-      collaboration = Collaboration.find_by(user: user, project: project_selected)
-      puts "\nYou're no longer a collaborator for \"#{project_selected.name}\"."
-      deleted_collaboration = collaboration.delete   
-      @user = deleted_collaboration.user
+      prompt.select("\nAre you sure you want to remove yourself as collaborator from \"#{project_selected.name}\"?", cycle: true) do |menu| 
+        menu.choice "Yes, remove me as collaborator", -> { remove_from_project(project_selected) }
+        menu.choice "No, take me back to Main Menu", -> { main_menu } 
+      end 
     end
+  end
+
+  def remove_from_project(project)
+    collaboration = Collaboration.find_by(user: user, project: project)
+    puts "\nRemoval success. You're no longer a collaborator for \"#{project.name}\"."
+    deleted_collaboration = collaboration.delete   
+    @user = deleted_collaboration.user
     prompt.select("\n") { |menu| menu.choice "Go Back to Main Menu", -> { main_menu } }
   end
 
