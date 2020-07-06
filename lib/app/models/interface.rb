@@ -342,17 +342,18 @@ class Interface
 
     if ownership_found.empty?
       puts "\nThis project doesn't exist!"
+      prompt.select("\n") { |menu| menu.choice "Go Back to Main Menu", -> { main_menu } }
     elsif Collaboration.where(user: user, project: project).exists?
       puts "\nYou're already a part of this project!"
+      prompt.select("\n") { |menu| menu.choice "Go Back to Main Menu", -> { main_menu } }
     else
       new_collaboration = Collaboration.create(user: user, project: project)
       @user = Collaboration.find_by(user: user).user
       puts "\nNice! You are now a collaborator for \"#{project.name}\"!"
-    end
-
-    prompt.select("\n") do |menu|
-      menu.choice "Take Me to Project Menu", -> { project_menu_page(project) }
-      menu.choice "Go Back to Main Menu", -> { main_menu }
+      prompt.select("\n") do |menu|
+        menu.choice "Take Me to Project Menu", -> { project_menu_page(project) }
+        menu.choice "Go Back to Main Menu", -> { main_menu }
+      end
     end
   end
 
