@@ -29,6 +29,8 @@ class Interface
     end
   end
 
+  
+
   def log_in
     username_input = prompt.ask("\n♥ Enter Username: ")
     user_found = User.find_by(username: username_input)
@@ -129,10 +131,10 @@ class Interface
     header
     puts "VIEW ALL CURRENT PROJECTS"
     puts 
-    
+
     choices = Hash.new
     user.projects.each { |project| choices[project.name] = project }
-
+    
     if choices.empty?
       puts "You're not working on any project right now!"
       prompt.select("\n", cycle: true) do |menu|
@@ -241,6 +243,7 @@ class Interface
   def mark_complete(project, task)
     header
     task.change_completed
+    
     puts "Task marked complete. Well done!"
     prompt.select("\n", cycle: true) do |menu|
       menu.choice "Go Back to View/Update Task Page", -> { view_or_update_task_page(project) }
@@ -320,9 +323,11 @@ class Interface
     elsif Collaboration.where(user: user, project: project).exists?
       puts "\nYou're already a part of this project!"
     else
-      Collaboration.create(user: user, project: project)
+      new_collaboration = Collaboration.create(user: user, project: project)
+      @user = new_collaboration.user
       puts "\nNice! You are now a collaborator for \"#{project.name}\"!"
     end
+
     prompt.select("\n") do |menu|
       menu.choice "Find Another Project to Collaborate", -> { collaborate_on_an_existing_project_page }
       menu.choice "Take Me to Project Menu", -> { project_menu_page(project) }
@@ -344,7 +349,8 @@ class Interface
       project_selected = prompt.select("♥ Select a project to stop collaborating: ", choices)
       collaboration = Collaboration.find_by(user: user, project: project_selected)
       puts "You're no longer a collaborator for \"#{project_selected.name}\"."
-      collaboration.destroy   
+      deleted_collaboration = collaboration.delete   
+      @user = deleted_collaboration.user
     end
     prompt.select("\n") { |menu| menu.choice "Go Back to Main Menu", -> { main_menu } }
   end
