@@ -314,8 +314,8 @@ class Interface
     task_description = prompt.ask("♥ Enter task description: ")
     puts 
     puts "♥ Enter a due date"
-    month = (prompt.ask("Enter digit(s) month with no leading 0's: ")).to_i
-    day = (prompt.ask("Enter digit(s) day with no leading 0's: ")).to_i
+    month = (prompt.ask("Enter digit(s) month: ")).to_i
+    day = (prompt.ask("Enter digit(s) day: ")).to_i
     year = (prompt.ask("Enter 4 digits year: ")).to_i
     task_due_date = Time.new(year, month, day)
 
