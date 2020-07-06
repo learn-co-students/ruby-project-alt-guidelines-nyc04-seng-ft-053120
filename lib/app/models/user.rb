@@ -3,7 +3,6 @@ class User < ActiveRecord::Base
     has_many :projects, through: :collaborations
     has_many :tasks
     
-<<<<<<< HEAD
   def change_username(new_username)
     self.username = new_username
     self.save
@@ -20,23 +19,6 @@ class User < ActiveRecord::Base
   end
 
   # def collaborate(project)
-=======
-    def change_username(new_username)
-        self.username = new_username
-        self.save
-    end
-
-    def create_new_project(name, description)
-        new_project = Project.create(name: name, description: description)
-        new_project.save
-        new_collaboration = Collaboration.create(user: self, :project: new_project)
-        new_collaboration.save
-        new_ownership = Ownership.create(user: self, project: new_project)
-        new_ownership.save
-    end
-
-    # def collaborate(project)
->>>>>>> ec7e5092224381df3cd293b831928af0b2deee15
     #    collaborate_project = Project.find_by(name: project.name)
     #       if collaborate_project == nil 
     #        puts" This project does not exist"
