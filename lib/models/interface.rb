@@ -32,5 +32,15 @@ class Interface
 
     def main_menu
         puts "Welcome to Book Club #{user.name}!"
+        answer = prompt.select("What would you like to do?") do |menu|
+            menu.choice "Search for reviews", -> {}
+            menu.choice "Review a book", -> {}
+            menu.choice "Edit or delete a review", -> {}
+            menu.choice "Log out", -> {}
+        end
     end
+
+    # def main_menu
+    #     puts "Welcome to Book Club #{user.name}!"
+    # end
 end   
