@@ -25,4 +25,16 @@ class User < ActiveRecord::Base
             return exit 
         end
     end
+
+    def display_books
+        all_books = self.books.map do |book_instance|
+            {book_instance.title => book_instance.id }
+        end 
+        if all_books.length > 0
+            TTY::Prompt.new.select("Choose a book", all_books)
+        else 
+            puts "You don't habe any books available 😢"
+        end
+    end
+
 end
