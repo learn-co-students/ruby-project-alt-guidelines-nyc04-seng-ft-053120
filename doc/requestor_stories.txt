@@ -1,0 +1,17 @@
+REQUESTOR STORIES
+
+- CREATE a request
+- CANCEL a request
+- MODIFY a request
+- RETURN a donation
+- CONFIRM a donation
+- LIST all available donations
+- LIST all available donations by category
+- LIST all pending requests
+- LIST all pending requests by category
+- LIST own pending requests
+- LIST own pending requests by category
+- LIST all completed requests
+- LIST all completed requests by category
+- LIST own completed requests
+- LIST own completed requests by category
