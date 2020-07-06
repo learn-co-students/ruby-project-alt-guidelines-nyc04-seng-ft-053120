@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
     has_many :collaborations
     has_many :projects, through: :collaborations
     has_many :tasks
-    # attr_accessor :username, :collaborations, :projects, :tasks
+    attr_accessor :username, :collaborations, :projects, :tasks
     def change_username(new_username)
         self.username = new_username
         self.save

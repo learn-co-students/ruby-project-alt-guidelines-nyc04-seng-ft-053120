@@ -22,35 +22,38 @@ class Interface
     header
     puts "------------- Welcome to Twogether, A CLI Project Collaboration App -------------"
     puts 
-    prompt.select("♥ SELECT AN OPTION: ") do |menu|
-      menu.choice "Log In", -> { self.log_in }
-      menu.choice "Register", -> { self.register }
+
+    prompt.select("♥ SELECT AN OPTION: \n", cycle: true) do |menu|
+      menu.choice "Log In", -> { log_in }
+      menu.choice "Register", -> { register }
     end
   end
 
+  
+
   def log_in
-    username_input = prompt.ask("\nEnter Username: ")
+    username_input = prompt.ask("\n♥ Enter Username: ")
     user_found = User.find_by(username: username_input)
     if !user_found
-      puts "Sorry, that username doesn't exist"
-      prompt.select(" ") { |menu| menu.choice "Go Back", -> {self.log_in_page} }
+      puts "\nSorry, that username doesn't exist"
+      prompt.select(" ") { |menu| menu.choice "Go Back", -> {log_in_page} }
     else
       @user = user_found
-      puts "Log In Successful!"
-      prompt.select(" ") { |menu| menu.choice "Go To Main Menu", -> {self.main_menu} }
+      puts "\nLog In Successful!"
+      prompt.select(" ") { |menu| menu.choice "Go To Main Menu", -> {main_menu} }
     end
   end
 
   def register
-    username_input = prompt.ask("Pick A Username: ")
+    username_input = prompt.ask("\n♥ Pick A Username: ")
     user_found = User.find_by(username: username_input)
     if user_found
-      puts "Sorry, that username has been taken!"
+      puts "\nSorry, that username has been taken!"
       prompt.select(" ") { |menu| menu.choice "Go Back", -> {self.log_in_page} }
     else
       new_user = User.create(username: username_input)
       @user = new_user
-      puts "Sign Up Successful!"
+      puts "\nSign Up Successful!"
       prompt.select(" ") { |menu| menu.choice "Go To Main Menu", -> {self.main_menu} }
     end
   end
@@ -62,13 +65,13 @@ class Interface
     puts "♥ Welcome, #{user.username}. It's a great day to get some work done!"
     puts
 
-    prompt.select("♥ Choose from the following options:\n") do |menu|
-      menu.choice "View My Current Projects", -> { self.view_current_projects_page }
-      menu.choice "Create a New Project", -> { self.create_a_new_project_page }
-      menu.choice "Collaborate On An Existing Project", -> { self.collaborate_on_an_existing_project_page }
-      menu.choice "Remove Myself From A Project", -> { self.remove_from_project_page }
-      menu.choice "See Projects I Created\n", -> { self.projects_i_created_page }
-      menu.choice "Log Out", -> { self.log_in_page }
+    prompt.select("♥ What would you like to do?\n", cycle: true) do |menu|
+      menu.choice "View My Current Projects", -> { view_current_projects_page }
+      menu.choice "Create a New Project", -> { create_a_new_project_page }
+      menu.choice "Collaborate On An Existing Project", -> { collaborate_on_an_existing_project_page }
+      menu.choice "Remove Myself From A Project", -> { remove_from_project_page }
+      menu.choice "See Projects I Created\n", -> { projects_i_created_page }
+      menu.choice "Log Out", -> { log_in_page }
     end
   end
 
@@ -84,10 +87,10 @@ class Interface
     puts "New project: #{new_project.name}, has been successfully created!"
     puts
 
-    prompt.select(" ") do |menu|
-      menu.choice "Add a Collaborator to My Project", -> { self.add_collaborator_page(new_project) }
-      menu.choice "Take Me To Project Menu", -> { self.project_menu_page(new_project) }
-      menu.choice "Go Back to Main Menu", -> { self.main_menu }
+    prompt.select(" ", cycle: true) do |menu|
+      menu.choice "Add a Collaborator to My Project", -> { add_collaborator_page(new_project) }
+      menu.choice "Take Me To Project Menu", -> { project_menu_page(new_project) }
+      menu.choice "Go Back to Main Menu", -> { main_menu }
     end
   end
 
@@ -96,29 +99,29 @@ class Interface
     puts "ADD A COLLABORATOR"
     puts
 
-    username_input = prompt.ask("Enter username of collaborator: ")
+    username_input = prompt.ask("♥ Enter username of collaborator: ")
     collaborator = User.find_by(username: username_input) # will return nil if not found
 
     # If collaborator is already a collaborator on the project, puts message to tell user so
     if Collaboration.where(user: collaborator, project: new_project).exists?
-      puts "This collaborator is already a part of this project!"
-      promp.select(" ") do |menu|
-        menu.choice "Try Another Collaborator", -> { self.add_collaborator_page(new_project) }
-        menu.choice "Go Back to Main Menu", -> { self.main_menu }
+      puts "\nThis collaborator is already a part of this project!"
+      promp.select(" ", cycle: true) do |menu|
+        menu.choice "Try Another Collaborator", -> { add_collaborator_page(new_project) }
+        menu.choice "Go Back to Main Menu", -> { main_menu }
       end
     elsif !collaborator # If collaborator cannot be found in database
-      puts "The collaborator cannot be found."
-      prompt.select(" ") do |menu|
-        menu.choice "Try Another Collaborator", -> { self.add_collaborator_page(new_project) }
-        menu.choice "Go Back to Main Menu", -> { self.main_menu }
+      puts "\nThe collaborator cannot be found."
+      prompt.select(" ", cycle: true) do |menu|
+        menu.choice "Try Another Collaborator", -> { add_collaborator_page(new_project) }
+        menu.choice "Go Back to Main Menu", -> { main_menu }
       end
     elsif collaborator
       Collaboration.create(user: collaborator, project: new_project)
       puts "Collaborator, #{collaborator.username} has successfully been added to your project #{new_project.name}!"
-      prompt.select(" ") do |menu|
-        menu.choice "Add Another Collaborator", -> { self.add_collaborator_page(new_project) }
-        menu.choice "Take me To Project Menu", -> { self.project_menu_page(new_project) }
-        menu.choice "Go Back to Main Menu", -> { self.main_menu }
+      prompt.select(" ", cycle: true) do |menu|
+        menu.choice "Add Another Collaborator", -> { add_collaborator_page(new_project) }
+        menu.choice "Take me To Project Menu", -> { project_menu_page(new_project) }
+        menu.choice "Go Back to Main Menu", -> { main_menu }
       end
     end
   end
@@ -128,14 +131,21 @@ class Interface
     header
     puts "VIEW ALL CURRENT PROJECTS"
     puts 
-    
+
     choices = Hash.new
     user.projects.each { |project| choices[project.name] = project }
-    project_selected = prompt.select("♥ Select a project:", choices)
-
-    # Take the user to the project page
-    project_menu_page(project_selected)
-
+    
+    if choices.empty?
+      puts "You're not working on any project right now!"
+      prompt.select("\n", cycle: true) do |menu|
+        menu.choice "Create a New Project", -> { create_a_new_project_page }
+        menu.choice "Collaborate on an Existing Project\n", -> { collaborate_on_an_existing_project_page }
+        menu.choice "Go Back to Main Menu", -> { main_menu }
+      end
+    else
+      project_selected = prompt.select("♥ Select a project:\n", choices, cycle: true)
+      project_menu_page(project_selected)
+    end
     ## Add option to take user back to home menu
   end
 
@@ -143,16 +153,16 @@ class Interface
     # This displays info about a project
     header
     puts "PROJECT MENU - #{project.name}"
-    puts project.description
+    puts "About: #{project.description}"
     puts
 
-    prompt.select("♥ Select from the following options: ") do |menu|
-      menu.choice "See All Project Collaborators", -> { self.see_all_project_collaborators_page(project) }
-      menu.choice "View All Project Tasks", -> { self.view_all_project_tasks_page(project) }
-      menu.choice "View/Update My Tasks", -> { self.view_or_update_task_page(project) }
-      menu.choice "Add a New Task\n", -> { self.add_a_new_task_page(project) }
-      menu.choice "Go Back to View All Projects", -> { self.view_current_projects_page(project) }
-      menu.choice "Go Back to Main Menu", -> { self.main_menu }
+    prompt.select("♥ Select from the following options: \n", cycle: true) do |menu|
+      menu.choice "View All Project Tasks", -> { view_all_project_tasks_page(project) }
+      menu.choice "View/Update My Tasks", -> { view_or_update_task_page(project) }
+      menu.choice "Add a New Task", -> { add_a_new_task_page(project) }
+      menu.choice "View All Project Collaborators\n", -> { see_all_project_collaborators_page(project) }
+      menu.choice "Go Back to View All Projects", -> { view_current_projects_page(project) }
+      menu.choice "Go Back to Main Menu", -> { main_menu }
     end
   end
 
@@ -161,11 +171,12 @@ class Interface
     header
     puts "ALL PROJECT COLLABORATORS - #{project.name}"
     puts
-    project.users.each { |user| puts user.username }
+    puts "Here are users currently collaborating on project \"#{project.name}\":\n"
+    project.users.each_with_index { |user, idx| puts "#{idx + 1}. #{user.username}" }
 
-    prompt.select("\n") do |menu|
-      menu.choice "Go Back to Project Menu", -> { self.project_menu_page(project) }
-      menu.choice "Go Back to Main Menu", -> { self.main_menu }
+    prompt.select("\n", cycle: true) do |menu|
+      menu.choice "Go Back to Project Menu", -> { project_menu_page(project) }
+      menu.choice "Go Back to Main Menu", -> { main_menu }
     end
   end
 
@@ -177,14 +188,16 @@ class Interface
     project.tasks.order(:due_date).each do |task|
       completion_status = "Not Yet!"
       completion_status = "Yep!" if task.completed
-      puts "Task: #{task.description}"
-      puts "Being Done By: #{task.user.username}"
-      puts "Completed? #{completion_status}"
-      puts "Due On: #{task.due_date.strftime("%m/%d/%Y")}"
+      puts "TASK → #{task.description}"
+      puts "Being Done By → #{task.user.username}"
+      puts "Completed? → #{completion_status}"
+      puts "Due On → #{task.due_date.strftime("%m/%d/%Y")}"
       puts 
+      puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+      puts
     end
 
-    prompt.select("\n") do |menu|
+    prompt.select("\n", cycle: true) do |menu|
       menu.choice "Go Back to Project Menu", -> { self.project_menu_page(project) }
       menu.choice "Go Back to Main Menu", -> { self.main_menu }
     end
@@ -200,7 +213,7 @@ class Interface
 
     if choices.empty?
       puts "You don't have any task on this project right now."
-      prompt.select("\n") do |menu|
+      prompt.select("\n", cycle: true) do |menu|
         menu.choice "Add a New Task\n", -> { self.add_a_new_task_page(project) }
         menu.choice "Go Back to Project Menu", -> { self.project_menu_page(project) }
         menu.choice "Go Back to Main Menu", -> { self.main_menu }
@@ -215,42 +228,43 @@ class Interface
   def task_page(project, task)
     # Shows things user can do with a task
     header
-    puts "#{task.description} - #{project.name}"
+    puts "#{project.name} - #{task.description}"
     puts
 
-    prompt.select("♥ Select from the following: ") do |menu|
-      menu.choice "Mark Completed", -> { self.mark_complete(task) }
-      menu.choice "Edit Task", -> { self.edit(task) }
-      menu.choice "Change Due Date\n", -> { self.change_due_date(task) }
-      menu.choice "Go Back to View/Update Task Page", -> { self.view_or_update_task_page(project) }
-      menu.choice "Go Back to Main Menu", -> { self.main_menu }
+    prompt.select("♥ Select from the following:\n", cycle: true) do |menu|
+      menu.choice "Mark Completed", -> { mark_complete(project, task) }
+      menu.choice "Edit Task", -> { edit(project, task) }
+      menu.choice "Change Due Date\n", -> { change_due_date(project, task) }
+      menu.choice "Go Back to View/Update Task Page", -> { view_or_update_task_page(project) }
+      menu.choice "Go Back to Main Menu", -> { main_menu }
     end
   end
 
-  def mark_complete(task)
+  def mark_complete(project, task)
     header
     task.change_completed
+    
     puts "Task marked complete. Well done!"
-    prompt.select("\n") do |menu|
-      menu.choice "Go Back to View/Update Task Page", -> { self.view_or_update_task_page(project) }
-      menu.choice "Go Back to Main Menu", -> { self.main_menu }
+    prompt.select("\n", cycle: true) do |menu|
+      menu.choice "Go Back to View/Update Task Page", -> { view_or_update_task_page(project) }
+      menu.choice "Go Back to Main Menu", -> { main_menu }
     end
   end
 
-  def edit(task)
+  def edit(project, task)
     header
-    new_description = prompt.ask("Enter new description: ")
+    new_description = prompt.ask("♥ Enter new description: ")
     task.description = new_description
     task.save
     puts "Task description updated!"
 
-    prompt.select("\n") do |menu|
-      menu.choice "Go Back to View/Update Task Page", -> { self.view_or_update_task_page(project) }
-      menu.choice "Go Back to Main Menu", -> { self.main_menu }
+    prompt.select("\n", cycle: true) do |menu|
+      menu.choice "Go Back to View/Update Task Page", -> { view_or_update_task_page(project) }
+      menu.choice "Go Back to Main Menu", -> { main_menu }
     end
   end
 
-  def change_due_date(task)
+  def change_due_date(project, task)
     header
     puts "♥ Enter new due date for task"
 
@@ -264,8 +278,8 @@ class Interface
     puts "Task due date updated!"
 
     prompt.select("\n") do |menu|
-      menu.choice "Go Back to View/Update Task Page", -> { self.view_or_update_task_page(project) }
-      menu.choice "Go Back to Main Menu", -> { self.main_menu }
+      menu.choice "Go Back to View/Update Task Page", -> { view_or_update_task_page(project) }
+      menu.choice "Go Back to Main Menu", -> { main_menu }
     end
   end
 
@@ -284,7 +298,7 @@ class Interface
 
     Task.create(description: task_description, completed: false, due_date: task_due_date, project: project, user: user)
 
-    puts "Task successfully created!"
+    puts "\nTask successfully created!"
 
     prompt.select("\n") do |menu|
       menu.choice "Go Back to Project Menu", -> { self.project_menu_page(project) }
@@ -297,53 +311,48 @@ class Interface
     header
     puts "COLLABORATE ON AN EXISTING PROJECT"
     puts 
-    project_name = prompt.ask("Enter project name: ")
-    creator_name = prompt.ask("Enter username of project creator: ")
+    project_name = prompt.ask("♥ Enter project name: ")
+    creator_name = prompt.ask("♥ Enter username of project creator: ")
     project = Project.find_by(name: project_name)
     creator = User.find_by(username: creator_name)
 
     ownership_found = Ownership.where(user: creator, project: project)
 
     if ownership_found.empty?
-      puts "This project doesn't exist!"
-      prompt.select("\n") do |menu|
-        menu.choice "Find Another Project to Collaborate", -> { self.collaborate_on_an_existing_project_page }
-        menu.choice "Go Back to Main Menu", -> { self.main_menu }
-      end
-    elsif Collaboration.where(user: user, project: project).exist?
-      puts "You're already a part of this project!"
-      prompt.select("\n") do |menu|
-        menu.choice "Find Another Project to Collaborate", -> { self.collaborate_on_an_existing_project_page }
-        menu.choice "Go Back to Main Menu", -> { self.main_menu }
-      end
+      puts "\nThis project doesn't exist!"
+    elsif Collaboration.where(user: user, project: project).exists?
+      puts "\nYou're already a part of this project!"
     else
-      Collaboration.create(user: self, project: project)
-      puts "Nice! You are not a collaborator for #{project.name}!"
-      prompt.select("\n") do |menu|
-        menu.choice "Take Me to Project Menu", -> { self.project_menu_page(project) }
-        menu.choice "Go Back to Main Menu", -> { self.main_menu }
-      end
+      new_collaboration = Collaboration.create(user: user, project: project)
+      @user = new_collaboration.user
+      puts "\nNice! You are now a collaborator for \"#{project.name}\"!"
+    end
+
+    prompt.select("\n") do |menu|
+      menu.choice "Find Another Project to Collaborate", -> { collaborate_on_an_existing_project_page }
+      menu.choice "Take Me to Project Menu", -> { project_menu_page(project) }
+      menu.choice "Go Back to Main Menu", -> { main_menu }
     end
   end
 
   def remove_from_project_page
     header
     puts "REMOVE MYSELF FROM A PROJECT"
+    puts
 
     choices = Hash.new
     user.projects.each { |project| choices[project.name] = project }
 
     if choices.empty?
       puts "You're not a part of any project right now."
-      prompt.select("\n") { |menu| menu.choice "Go Back to Main Menu", -> { self.main_menu } }
     else
-      project_selected = prompt.select("Selector a project to stop collaborating: ", choices)
-
+      project_selected = prompt.select("♥ Select a project to stop collaborating: ", choices)
       collaboration = Collaboration.find_by(user: user, project: project_selected)
-      puts "You're no longer a collaborator for #{project_selected.name}."
-      collaboration.delete
-      prompt.select("\n") { |menu| menu.choice "Go Back to Main Menu", -> { self.main_menu } }
+      puts "You're no longer a collaborator for \"#{project_selected.name}\"."
+      deleted_collaboration = collaboration.delete   
+      @user = deleted_collaboration.user
     end
+    prompt.select("\n") { |menu| menu.choice "Go Back to Main Menu", -> { main_menu } }
   end
 
   def projects_i_created_page
@@ -351,15 +360,15 @@ class Interface
     puts "PROJECTS I CREATED"
     projects_owned = Project.select { |project| project.user == user }
     if projects_owned.empty?
-      puts "You haven't created any project yet"
+      puts "\nYou haven't created any project yet"
       prompt.select("\n") do |menu|
-        menu.choice "Create a New Project", -> { self.create_a_new_project_page }
-        menu.choice "Go Back to Main Menu", -> { self.main_menu }
+        menu.choice "Create a New Project", -> { create_a_new_project_page }
+        menu.choice "Go Back to Main Menu", -> { main_menu }
       end
     else
       choices = Hash.new
       projects_owned.each { |project| choices[project.name] = project }
-      projects_owned = prompt.select("♥ Select a project to go to page: ", choices)
+      project_selected = prompt.select("♥ Select a project to go to page: ", choices, cycle: true)
       project_owner_page(project_selected)
     end
     # # Add option to go back to menu?
@@ -370,12 +379,12 @@ class Interface
     header
     puts "PROJECT I CREATED - #{project.name}"
     puts 
-    prompt.select("♥ Select from the choices below: ") do |menu|
-      menu.choice "Edit Project's Name", -> { self.edit_project_name_page(project) }
-      menu.choice "Edit Project's Description", -> { self.edit_project_description_page(project) }
-      menu.choice "See Collaborators", -> { self.see_all_project_collaborators_page(project) }
-      menu.choice "Add a Collaborator\n", -> { self.add_collaborator_page(new_project) }
-      menu.choice "Go Back to Main Menu", -> { self.main_menu }
+    prompt.select("♥ Select from the choices below: \n", cycle: true) do |menu|
+      menu.choice "Edit Project's Name", -> { edit_project_name_page(project) }
+      menu.choice "Edit Project's Description", -> { edit_project_description_page(project) }
+      menu.choice "See Collaborators", -> { see_all_project_collaborators_page(project) }
+      menu.choice "Add a Collaborator\n", -> { add_collaborator_page(new_project) }
+      menu.choice "Go Back to Main Menu", -> { main_menu }
     end
   end 
 
@@ -386,11 +395,11 @@ class Interface
     new_name = prompt.ask("♥ Enter a new name for the project: ")
     project.name = new_name
     project.save
-    puts "Project's name has been changed to '#{project.name}'"
+    puts "\nProject's name has been changed to '#{project.name}'"
 
-    prompt.select("\n") do |menu|
-      menu.choice "Go Back to Project Owner Page", -> { self.project_owner_page(project) }
-      menu.choice "Go Back to Main Menu", -> { self.main_menu }
+    prompt.select("\n", cycle: true) do |menu|
+      menu.choice "Go Back to Project Owner Page", -> { project_owner_page(project) }
+      menu.choice "Go Back to Main Menu", -> { main_menu }
     end
   end
 
@@ -398,12 +407,11 @@ class Interface
     new_description = prompt.ask("♥ Enter a new description for the project:")
     project.description = new_description
     project.save
-    puts "Project's description has been changed to '#{project.description}'"
+    puts "\nProject's description has been changed to '#{project.description}'"
 
     prompt.select("\n") do |menu|
-      menu.choice "Go Back to Project Owner Page", -> { self.project_owner_page(project) }
-      menu.choice "Go Back to Main Menu", -> { self.main_menu }
+      menu.choice "Go Back to Project Owner Page", -> { project_owner_page(project) }
+      menu.choice "Go Back to Main Menu", -> { main_menu }
     end
   end
-  
 end
