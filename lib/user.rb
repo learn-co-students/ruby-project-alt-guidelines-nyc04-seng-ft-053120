@@ -14,7 +14,6 @@ class User < ActiveRecord::Base
             w.choice "          Log Out".cyan, ->{Interface.login_signup} #0
             w.choice "          Quit".red, -> {Interface.quit}  #1
         end
-        binding.pry
         return nil
     end
 
@@ -32,6 +31,15 @@ class User < ActiveRecord::Base
             m.choice "          Quit".red, ->{Interface.quit}
         end
         return nil
+    end
+
+    def cancel_donation
+        binding.pry
+        transactions=Transaction.where(user_id:self.id,status:"Donated")
+        puts""
+        "           Which item you want to cancel           ".colorize(:background=>:blue)
+
+       
     end
 
 
