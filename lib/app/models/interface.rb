@@ -105,14 +105,34 @@ class Interface
     puts
     puts "♥ Welcome, #{user.username}. It's a great day to get some work done!"
     puts
-
-    prompt.select("♥ SELECT AN OPTION:\n", cycle: true) do |menu|
+    prompt.select("♥ SELECT AN OPTION:\n", cycle: true, per_page: 10) do |menu|
       menu.choice "View My Current Projects", -> { view_current_projects_page }
       menu.choice "Create a New Project", -> { create_a_new_project_page }
       menu.choice "Collaborate On An Existing Project", -> { collaborate_on_an_existing_project_page }
       menu.choice "Remove Myself From A Project", -> { remove_from_project_page }
       menu.choice "See Projects I Created\n", -> { projects_i_created_page }
+      menu.choice "Change Password", -> { change_password_page }
       menu.choice "Log Out", -> { log_in_or_register_page }
+    end
+  end
+
+  def change_password_page
+    header
+    puts "CHANGE YOUR PASSWORD\n"
+    current_password = prompt.mask("♥ Enter Your Current Password: ")
+    if current_password == user.password 
+      puts "\nInput New Password Below"
+      new_password = prompt_and_validate_password
+      user.password = new_password
+      user.save
+      puts "\nPassword Successfully Changed!"
+      prompt.select(" ") { |menu| menu.choice "Go Back To Main Menu", -> {main_menu} }
+    else
+      puts "Password Incorrect"
+      prompt.select(" ", cycle: true) do |menu|
+        menu.choice "Try Again", -> {change_password_page} 
+        menu.choice "Go Back To Main Menu", -> {main_menu} 
+      end
     end
   end
 
