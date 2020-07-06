@@ -69,12 +69,22 @@ class Main
             ░░░░░░░░██░░░░░░░░░░░░██░░░░░░░░
             ░░░░░░░▐██░░░░░░░░░░░░██▌░░░░░░░
             ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-
+            
+Welcome to our application!
 '.blue.on_yellow
     end
 
     def login_register_prompt
+        answer = prompt.select("Are you logging in or registering?", [
+            "login",
+            "Register"
+        ])
 
+        if answer == "Login"
+            User.log_someone_in
+        elseif answer == "Register"
+            User.create_new_user
+        end
     end
 
 end
