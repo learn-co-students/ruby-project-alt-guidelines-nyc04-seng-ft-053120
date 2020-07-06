@@ -13,7 +13,6 @@
 ActiveRecord::Schema.define(version: 2020_07_06_031402) do
 
   create_table "resources", force: :cascade do |t|
-    t.integer "resource_id"
     t.string "name"
     t.string "location"
     t.integer "zipcode"
@@ -21,16 +20,15 @@ ActiveRecord::Schema.define(version: 2020_07_06_031402) do
   end
 
   create_table "userresources", force: :cascade do |t|
-    t.integer "username"
     t.integer "user_id"
     t.integer "resource_id"
   end
 
   create_table "users", force: :cascade do |t|
+    t.string "username"
+    t.string "password"
     t.string "name"
     t.integer "age"
-    t.string "borough"
-    t.integer "user_id"
   end
 
 end
