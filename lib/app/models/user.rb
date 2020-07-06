@@ -24,9 +24,28 @@ class User < ActiveRecord::Base
           end
     end
     def add_new_task_to_project(description, due_date, project)
-        found_project = Project.find(project.name)
-        if found_project == true
-        new_task = Task.create(user: self, description: description, completed: false, due_date: due_date, project: project)
+        found_project = Project.find(project.id)
+        if found_project
+        new_task = Task.create(description: description, completed: false, due_date: due_date, project: project, user: self)
         end
     end 
+    # def remove_self_from_project
+    #    self.projects.find do |project| 
+    #     if project_id == project.id
+    #         project
+    #     end
+    #    end
+    #    project.collaborations.find do |collaboration|
+    #     if collaboration.user_id == self.id
+    #         collaboration
+    #     end
+    #    end
+    #    collaboration.destroy()
+    # end
+    def projects_i_own
+      self.projects.select do |project|
+      if project.ownership.user_id == self.id
+        project
+      end
+    end
 end
