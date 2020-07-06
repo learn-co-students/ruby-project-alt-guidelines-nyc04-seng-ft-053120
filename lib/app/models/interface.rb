@@ -41,38 +41,61 @@ class Interface
   end
 
   def log_in
-    # Prompt for username input, find username in database, if the username doesn't exist in the database, output message telling user so; if username is found, present choice to take user to main menu
+    # Prompt for username and password inputs, find user in database, if cannot find user by username and password, output message telling user so; if username is found, take user to main menu
     username_input = prompt.ask("\n♥ Enter Username: ")
-    user_found = User.find_by(username: username_input)
+    password_input = prompt.mask("♥ Enter Password: ")
+
+    user_found = User.find_by(username: username_input, password: password_input)
+
     if !user_found
-      puts "\nSorry, that username doesn't exist"
-      prompt.select(" ") { |menu| menu.choice "Go Back", -> {log_in_or_register_page} }
+      puts "\nSorry, invalid username or password"
+      prompt.select(" ", cycle: true) do |menu|
+        menu.choice "Try Again", -> {log_in} 
+        menu.choice "Go Back", -> {log_in_or_register_page} 
+      end
     else
       @user = user_found
       puts "\nLog In Successful!\n"
-      print "\nTaking you to main menu"
+      print "\nTaking you to Main Menu"
       transition_to_new_page
       main_menu
     end
   end
 
-  def register
-    # If the username is already in the database, puts message telling user so. Otherwise, take user to main menu.
-    username_input = prompt.ask("\n♥ Pick A Username: ")
+  def prompt_and_validate_username
+    # Helper function that prompts for and returns a valid username
+    username_input = prompt.ask("\n♥ Pick a Username: ")
     user_found = User.find_by(username: username_input)
     if user_found
-      puts "\nSorry, that username has been taken!"
-      print "\nTaking you back to log in menu"
-      transition_to_new_page
-      log_in_or_register_page
+      puts "\nSorry, that username has been taken! Please choose another username."
+      prompt_and_validate_username
     else
-      new_user = User.create(username: username_input)
-      @user = new_user
-      puts "\nSign Up Successful!"
-      print "\nTaking you to main menu"
-      transition_to_new_page
-      main_menu
+      return username_input
     end
+  end
+
+  def prompt_and_validate_password
+    # Helper function that prompts for and returns a valid password
+    password_input_1 = prompt.mask("♥ Pick a Password: ")
+    password_input_2 = prompt.mask("♥ Re-enter Password: ")
+    if password_input_1 != password_input_2
+      puts "\n Your passwords do not match. Please try again."
+      prompt_and_validate_password
+    else
+      return password_input_2
+    end
+  end
+
+  def register
+    username_input = prompt_and_validate_username
+    password_input = prompt_and_validate_password
+
+    new_user = User.create(username: username_input, password: password_input)
+    @user = new_user
+    puts "\nSign Up Successful!"
+    print "\nTaking you to Main Menu"
+    transition_to_new_page
+    main_menu
   end
 
   def main_menu
@@ -303,8 +326,8 @@ class Interface
   
   def prompt_for_date
     # Prompts user for the date, output the date
-
     date_input = prompt.ask("♥ Enter due date in MM/DD/YYYY format: ")
+
     if validate_date(date_input)
       # If the date the user input is valid, return the new datetime created
       month, day, year = date_input.split("/").map { |s| s.to_i }

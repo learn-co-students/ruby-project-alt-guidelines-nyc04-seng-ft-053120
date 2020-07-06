@@ -4,10 +4,10 @@ Collaboration.destroy_all
 Task.destroy_all
 Ownership.destroy_all
 
-anh = User.create(username: "anh123")
-ge = User.create(username: "ge123")
-bob = User.create(username: "bob_is_best")
-michelle = User.create(username: "michelle")
+anh = User.create(username: "anh123", password: "anh123")
+ge = User.create(username: "ge123", password: "ge123")
+bob = User.create(username: "bob_is_best", password: "bob_is_best")
+michelle = User.create(username: "michelle", password: "michelle")
 
 history = Project.create(name: "History", description: "Description for history project")
 art = Project.create(name: "Art", description: "Description for art project")
