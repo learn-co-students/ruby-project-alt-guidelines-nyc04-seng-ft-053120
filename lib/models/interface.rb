@@ -35,7 +35,7 @@ class Interface
         answer = prompt.select("What would you like to do?") do |menu|
             menu.choice "Search for reviews", -> {}
             menu.choice "Review a book", -> {}
-            menu.choice "Edit or delete a review", -> {}
+            menu.choice "Edit my review", -> {}
             menu.choice "Log out", -> {}
         end
     end
