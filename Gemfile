@@ -8,3 +8,7 @@ gem "pry"
 gem "require_all"
 gem "faker"
 gem "tty-prompt"
+
+gem 'date'
+gem 'rest-client'
+gem 'json'

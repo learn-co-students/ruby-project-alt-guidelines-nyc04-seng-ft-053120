@@ -1,3 +1,6 @@
+require 'date'
+require 'rest-client'
+require 'json'
 require 'bundler'
 Bundler.require
 

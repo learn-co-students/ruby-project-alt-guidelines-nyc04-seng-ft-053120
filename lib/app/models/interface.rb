@@ -1,5 +1,3 @@
-require 'date'
-
 class Interface
   attr_accessor :prompt, :user
 
@@ -25,6 +23,8 @@ class Interface
     header
     puts "------------- Welcome to Twogether, A CLI Project Collaboration App -------------"
     puts 
+    random_quote
+    puts
 
     prompt.select("♥ SELECT AN OPTION: ", cycle: true) do |menu|
       menu.choice "Log In", -> { log_in }
@@ -115,6 +115,15 @@ class Interface
       menu.choice "Delete Account", -> { delete_account_page }
       menu.choice "Log Out", -> { log_in_or_register_page }
     end
+  end
+
+  def random_quote
+    # puts a random inspirational quote
+    response = RestClient.get("https://type.fit/api/quotes")
+    quotes = JSON.parse(response)
+    random_quote_hash = quotes[rand(0...quotes.length)]
+    puts "\"#{random_quote_hash["text"]}\""
+    puts "- #{random_quote_hash["author"]}"
   end
 
   def change_password_page
