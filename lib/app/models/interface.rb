@@ -113,6 +113,7 @@ class Interface
       menu.choice "See Projects I Created\n", -> { projects_i_created_page }
       menu.choice "Change Password", -> { change_password_page }
       menu.choice "Change Username", -> { change_username_page}
+      menu.choice "Delete Account", -> { delete_account_page }
       menu.choice "Log Out", -> { log_in_or_register_page }
     end
   end
@@ -152,6 +153,32 @@ class Interface
       prompt.select(" ", cycle: true) do |menu|
         menu.choice "Try Again", -> {change_username_page}
         menu.choice "Go Back To Main Menu", -> {main_menu}
+      end
+    end
+  end
+
+  def delete_account_page
+    header
+    puts "DELETE MY ACCOUNT\n"
+    puts 
+    puts "We are sorry to see you go!"
+    puts
+    current_password = prompt.mask("♥ Please Verify Your Password: ")
+    if current_password == user.password
+      prompt.select("\nAre you sure you want to delete your account? This CANNOT be undone!", cycle: true) do |menu|
+        menu.choice "Yes, Delete My Account", -> do
+          user.delete
+          print "\nYour account has been deleted. Taking you back to Log In page"
+          2.times { |i| transition_to_new_page }
+          log_in_or_register_page
+        end
+        menu.choice "No, Take Me Back To Main Menu", -> {main_menu} 
+      end
+    else
+      puts "\nDeletion unsuccessful. Password Incorrect."
+      prompt.select(" ", cycle: true) do |menu|
+        menu.choice "Try Again", -> {delete_account_page} 
+        menu.choice "Go Back To Main Menu", -> {main_menu} 
       end
     end
   end
