@@ -39,4 +39,36 @@ class User < ActiveRecord::Base
         end
         found_user
     end
+
+    def make_review
+        prompt = TTY::Prompt.new
+        input = prompt.collect do
+            puts "\nBook Review"
+            key(:title).ask("Enter Title of book:")
+            key(:author).ask("Enter the Author's name:")
+            key(:genre).ask("What is the genre of the book:")
+            key(:comment).ask("Go ahead review away:")
+            key(:rating).ask("On a scale of 1 - 10 how would rate the book?")
+            key(:recommend).select("Do you recommend this book?", %w(Yes No))
+        end
+
+        Review.create(
+            user_id: self.id,
+            book_id: check_if_book_exist(input),
+            comment: input[:comment],
+            rating: input[:rating])
+    end
+
+    def check_if_book_exist(input)
+        Book.all.each do |book|
+            if ((input[:title] == book.title) && (input[:author] == book.author) && (input[:genre] == book.genre))
+                return book.id
+            end
+        end
+        return Book.create(
+            title: input[:title],
+            author: input[:author],
+            genre: input[:genre]
+            ).id
+    end
 end
