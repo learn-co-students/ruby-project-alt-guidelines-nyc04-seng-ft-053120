@@ -3,37 +3,33 @@ class Interface
 
     def initialize
         @prompt = TTY::Prompt.new
+    end
 
+#Outputs a Welcome message to user 
+  def greeting
+        puts "Welcome to "
+    end
+
+# #Asks user if [new user, returning user] 
+#     if new user -> user creates an account
+#         new user enters username, password, name, age, and borough
+#             attributes meets integer/string requirements OR user is prompt to reenter
+
+    def new_user_or_returning_user
+        answer = prompt.select("Are you a returning user or a new user?", [
+                "New User",
+                 "Returning User"
+             ])
+            if answer == "New User"
+                User.create_new_user
+                elsif answer == "Returning User"
+                User.returning_user
+        end
     end
 end
 
-  # def greeting 
-    #     puts "Welcome"
-    #  end
-
-    # #  def new_user_or_returning_user
-    #     answer = prompt.select("Are you a new user or returning user?", [
-    #         "New User", 
-    #         "Returning User"
-    #     ])
-    #     if answer == "New User"
-    #         User.create_new_user
-    #     elsif answer == "Returning User"
-    #         User.returning_user
-    #     end
-
-    #  end
-# end
-
-
-
-#Outputs a Welcome message to user 
-
-#Asks user if [new user, returning user] 
-    #if new user -> user creates an account
-        #new user enters username, password, name, age, and borough
-            #attributes meets integer/string requirements OR user is prompt to reenter
-
+    
+        
 #Userresource
         #new user prompted to create a new search based on location
             #location -> user is prompted to choose a borough
@@ -65,11 +61,4 @@ end
                      #new user can view, save or delete search result
                          #creates a new search
                          #end session 
-                             #goodbye message
-                
-
-
-
-    
-
-  
+                             #goodbye message        
