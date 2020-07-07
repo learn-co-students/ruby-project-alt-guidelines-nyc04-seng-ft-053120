@@ -28,4 +28,6 @@ task3 = Task.create(description: "take a break!", completed: false, due_date: Ti
 task4 = Task.create(description: "formulate questions", completed: false, due_date: Time.new(2020, 8, 1), project: biology, user: bob)
 
 ownership1 = Ownership.create(user: anh, project: history)
-ownership2 = Ownership.create(user: anh, project: art)
+ownership2 = Ownership.create(user: ge, project: art)
+ownership3 = Ownership.create(user: bob, project: biology)
+ownership4 = Ownership.create(user: michelle, project: spanish)

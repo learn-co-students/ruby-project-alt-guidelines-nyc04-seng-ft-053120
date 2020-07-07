@@ -33,7 +33,7 @@ class Interface
   end
 
   def transition_to_new_page
-    # Helper function, takes in a message and a method (new_page); will display message, and transition user to new_page
+    # Displays moving dots to indicate transition to new page
     10.times do |i|
       sleep(0.2)
       print(".")
@@ -122,8 +122,12 @@ class Interface
     response = RestClient.get("https://type.fit/api/quotes")
     quotes = JSON.parse(response)
     random_quote_hash = quotes[rand(0...quotes.length)]
-    puts "\"#{random_quote_hash["text"]}\""
-    puts "- #{random_quote_hash["author"]}"
+    random_quote_text = random_quote_hash["text"]
+    random_quote_author = random_quote_hash["author"]
+    random_quote_author = "Unknown" if random_quote_author == nil
+
+    puts "\"#{random_quote_text}\""
+    puts "- #{random_quote_author}"
   end
 
   def change_password_page
@@ -161,7 +165,7 @@ class Interface
     header
     puts "DELETE MY ACCOUNT\n"
     puts 
-    puts "We are sorry to see you go!"
+    puts "We are sorry to see you go, #{user.username}!"
     puts
     current_password = prompt.mask("♥ Please Verify Your Password: ")
     if current_password == user.password
@@ -466,29 +470,48 @@ class Interface
     # This allows the user to add themselves as a collaborator on an existing project
     header
     puts "COLLABORATE ON AN EXISTING PROJECT"
-    puts 
-    project_name = prompt.ask("♥ Enter project name: ")
-    creator_name = prompt.ask("♥ Enter username of project creator: ")
-    project = Project.find_by(name: project_name)
-    creator = User.find_by(username: creator_name)
+    puts
+    # If there are no existing projects, puts statement and direct user to create one or go to main menu
 
-    ownership_found = Ownership.where(user: creator, project: project)
-
-    if ownership_found.empty?
-      puts "\nThis project doesn't exist!"
-      prompt.select("\n") { |menu| menu.choice "Go Back to Main Menu", -> { main_menu } }
-    elsif Collaboration.where(user: user, project: project).exists?
-      puts "\nYou're already a part of this project!"
-      prompt.select("\n") { |menu| menu.choice "Go Back to Main Menu", -> { main_menu } }
-    else
-      new_collaboration = Collaboration.create(user: user, project: project)
-      @user = Collaboration.find_by(user: user).user
-      puts "\nNice! You are now a collaborator for \"#{project.name}\"!"
+    if Project.all.empty? 
+      puts "There are no existing project right now."
       prompt.select("\n") do |menu|
-        menu.choice "Take Me to Project Menu", -> { project_menu_page(project) }
+        menu.choice "Create a New Project", -> { create_a_new_project_page }
         menu.choice "Go Back to Main Menu", -> { main_menu }
       end
+    else
+      puts "Existing Projects:\n"
+      # Show user a list of projects and creators in database
+      existing_projects_and_creators
+      puts 
+      project_name = prompt.ask("♥ Enter the name of project you want to collaborate on: ")
+      creator_name = prompt.ask("♥ Enter the username of project creator: ")
+      project = Project.find_by(name: project_name)
+      creator = User.find_by(username: creator_name)
+
+      ownership_found = Ownership.where(user: creator, project: project)
+
+      if ownership_found.empty?
+        puts "\nThis project doesn't exist!"
+        prompt.select("\n") { |menu| menu.choice "Go Back to Main Menu", -> { main_menu } }
+      elsif Collaboration.where(user: user, project: project).exists?
+        puts "\nYou're already a part of this project!"
+        prompt.select("\n") { |menu| menu.choice "Go Back to Main Menu", -> { main_menu } }
+      else
+        new_collaboration = Collaboration.create(user: user, project: project)
+        @user = Collaboration.find_by(user: user).user
+        puts "\nNice! You are now a collaborator for \"#{project.name}\"!"
+        prompt.select("\n") do |menu|
+          menu.choice "Take Me to Project Menu", -> { project_menu_page(project) }
+          menu.choice "Go Back to Main Menu", -> { main_menu }
+        end
+      end
     end
+  end
+
+  def existing_projects_and_creators
+    # Helper function, outputs a list of projects and creators
+    Project.all.each { |project| puts "- Name: #{project.name}\n- Creator: #{project.user.username}\n\n"}
   end
 
   def remove_from_project_page(project)
@@ -552,10 +575,36 @@ class Interface
       menu.choice "Edit Project's Name", -> { edit_project_name_page(project) }
       menu.choice "Edit Project's Description", -> { edit_project_description_page(project) }
       menu.choice "See Collaborators", -> { see_all_project_collaborators_page(project) }
-      menu.choice "Add a Collaborator\n", -> { add_collaborator_page(project) }
+      menu.choice "Add a Collaborator", -> { add_collaborator_page(project) }
+      menu.choice "Delete This Project\n", -> { delete_project_page(project) }
       menu.choice "Go Back to Main Menu", -> { main_menu }
     end
   end 
+
+  def delete_project_page(project)
+    header
+    puts "DELETE PROJECT: #{project.name}"
+    puts 
+    prompt.select("♥ Are you SURE you want to delete \"#{project.name}\"?\nThis will delete ALL project tasks and end ALL collaborations on the project.\n", cycle: true) do |menu|
+      menu.choice "Yes, Delete This Project", -> { delete_project(project) }
+      menu.choice "No, Take me Back to Main Menu", -> { main_menu }
+    end
+  end
+
+  def delete_project(project)
+    # Helper function
+    puts
+    puts "\"#{project.name}\" has been deleted."
+    # Deletes all project's tasks
+    project.tasks.each { |task| task.delete }
+    # deletes all collaborations
+    project.collaborations { |collab| collab.delete }
+    # deletes ownership
+    project.ownership.delete
+    # deletes the project
+    project.delete
+    prompt.select("\n", cycle: true) { |menu| menu.choice "Go Back to Main Menu", -> { main_menu }}
+  end
 
   def edit_project_name_page(project)
     header
