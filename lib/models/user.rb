@@ -31,26 +31,3 @@ class User < ActiveRecord::Base
     # end
     
 end 
-
-    #    def display_reviews
-    #     book_reviews = self.reviews.map do |review|
-    #         review.comment
-    #     end 
-    #     if book_reviews.lenght > 0
-    #         TTY::Prompt.new("Reviews:", book_reviews)
-    #     else 
-    #         puts "There are no reviews for this book. Be the first to create a review for it!"
-    #     end
-    # end
-
-
-    # def display_books
-    #     all_books = self.books.map do |book_instance|
-    #         {book_instance.title => book_instance.id }
-    #     end 
-    #     if all_books.length > 0
-    #         TTY::Prompt.new.select("Choose a book", all_books)
-    #     else 
-    #         puts "You don't habe any books available 😢"
-    #     end
-    # end
