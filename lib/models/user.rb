@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
             puts "-------Exiting app--------"
             exit
         end
-    end
+    end 
 
     def self.create_new_user
         prompt = TTY::Prompt.new
