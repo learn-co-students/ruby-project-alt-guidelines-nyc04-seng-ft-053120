@@ -304,7 +304,13 @@ class Interface
     puts "ALL PROJECT COLLABORATORS - #{project.name}"
     puts
     puts "\nHere are users currently collaborating on project \"#{project.name}\":\n"
-    project.users.each_with_index { |user, idx| puts "#{idx + 1}. #{user.username}" }
+    all_collaborators = project.users.order(:username)
+    
+    if all_collaborators.empty?
+      puts " This project doesn't have any collaborators right now."
+    else
+    all_collaborators.each_with_index{|user,idx| puts "#{idx +1}. #{user.username}"}
+    end
 
     prompt.select("\n", cycle: true) do |menu|
       menu.choice "Go Back to Project Menu", -> { project_menu_page(project) }
