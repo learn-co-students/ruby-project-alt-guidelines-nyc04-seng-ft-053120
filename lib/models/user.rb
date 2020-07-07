@@ -25,15 +25,11 @@ class User < ActiveRecord::Base
         end
     end
 
-
-  
-
-
-
     # def self.quit
     #     puts "Thank you for visiting us!"
     #     system('exit')
     # end
+    
 end 
 
     #    def display_reviews

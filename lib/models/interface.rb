@@ -58,20 +58,20 @@ class Interface
 
     def get_book_reviews(book_instance)
         book_id = book_instance.id
-        user_id = book_instance.
+        #user_id = 
         puts " "
         puts "These are the reviews for:"
-        puts "#{book_instance.title}"
+        puts "\"#{book_instance.title}\""
         puts "By: #{book_instance.author}"
         puts " "
 
         reviews_array = Review.all.select {|rev| rev.book_id == book_id }
         reviews_array.each { |rev| 
                     puts "Comment: #{rev.comment}"
-                    puts "Rating: #{rev.rating} "
+                    puts "Rating: #{rev.rating}"
         }
 
-        users_array = reviews_array.map {|rev| rev.user_id }
+        #users_array = reviews_array.map {|rev| rev.user_id }
     
         
     end
