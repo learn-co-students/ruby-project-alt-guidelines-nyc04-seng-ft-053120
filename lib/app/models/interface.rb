@@ -110,7 +110,7 @@ class Interface
       menu.choice "Create a New Project", -> { create_a_new_project_page }
       menu.choice "Collaborate On An Existing Project", -> { collaborate_on_an_existing_project_page }
       menu.choice "Remove Myself From A Project", -> { remove_from_project_page }
-      menu.choice "See Projects I Created\n", -> { projects_i_created_page }
+      menu.choice "Manage Projects I Created\n", -> { projects_i_created_page }
       menu.choice "Change Username", -> { change_username_page }
       menu.choice "Change Password", -> { change_password_page }
       menu.choice "Delete Account", -> { delete_account_page }
@@ -546,10 +546,10 @@ class Interface
     header
     puts "EDIT PROJECT NAME - #{project.name}"
     puts
-    new_name = prompt.ask("♥ Enter a new name for the project: ")
+    new_name = prompt.ask("\n♥ Enter a new name for the project: ")
     project.name = new_name
     project.save
-    puts "\nProject's name has been changed to '#{project.name}'"
+    puts "\nProject's name has been changed to \"#{project.name}\""
 
     prompt.select("\n", cycle: true) do |menu|
       menu.choice "Go Back to Project Owner Page", -> { project_owner_page(project) }
@@ -558,10 +558,10 @@ class Interface
   end
 
   def edit_project_description_page(project)
-    new_description = prompt.ask("♥ Enter a new description for the project:")
+    new_description = prompt.ask("\n♥ Enter a new description for the project:")
     project.description = new_description
     project.save
-    puts "\nProject's description has been changed to '#{project.description}'"
+    puts "\nProject's description has been changed to \"#{project.description}\""
 
     prompt.select("\n") do |menu|
       menu.choice "Go Back to Project Owner Page", -> { project_owner_page(project) }
