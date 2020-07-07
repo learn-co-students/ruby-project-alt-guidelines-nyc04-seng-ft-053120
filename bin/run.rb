@@ -1,6 +1,4 @@
-require 'pry'
 require_relative '../config/environment'
-
 #create a new franchise
 def create_franchise
     puts "Please enter Company name:"
@@ -37,7 +35,9 @@ def owner_and_franchises
     owner = Owner.find_by name: owner_name
     franchise = Franchise.find_by owner_id: owner.id
     company = Company.find_by id: franchise.company_id
-    puts "This owner owns  #{company.name}"
+    
+    puts "This owner owns franchise #{franchise.id} in #{franchise.location},
+     with parent company #{company.name}."
 end
 
 #enter location to see profit
@@ -47,3 +47,4 @@ def location
     franchise = Franchise.find_by location: franchise_location
     puts "This location's profit is #{franchise.profit}"
 end
+
