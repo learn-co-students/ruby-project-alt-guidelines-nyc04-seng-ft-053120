@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
     has_many :reviews
     has_many :books, through: :reviews
 
-
+    #master
     def self.try_again
         prompt = TTY::Prompt.new
         if prompt.select("Would you like to try again?", %w(Yes No)) == "No"
