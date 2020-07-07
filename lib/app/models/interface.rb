@@ -111,8 +111,8 @@ class Interface
       menu.choice "Collaborate On An Existing Project", -> { collaborate_on_an_existing_project_page }
       menu.choice "Remove Myself From A Project", -> { remove_from_project_page }
       menu.choice "See Projects I Created\n", -> { projects_i_created_page }
+      menu.choice "Change Username", -> { change_username_page }
       menu.choice "Change Password", -> { change_password_page }
-      menu.choice "Change Username", -> { change_username_page}
       menu.choice "Delete Account", -> { delete_account_page }
       menu.choice "Log Out", -> { log_in_or_register_page }
     end
@@ -137,24 +137,16 @@ class Interface
       end
     end
   end
+
   def change_username_page
     header
     puts "CHANGE YOUR USERNAME\n"
-    current_username = prompt.ask("♥ Enter Your Current Username: ")
-    if current_username == user.username
-      puts "\nInput New Username Below"
-      new_username = prompt_and_validate_username
-      user.username = new_username
-      user.save
-      puts "\nUsername Successfully Changed!"
-      prompt.select(" "){ |menu| menu.choice "Go Back To Main Menu", -> {main_menu} }
-    else
-      puts "Username Incorrect"
-      prompt.select(" ", cycle: true) do |menu|
-        menu.choice "Try Again", -> {change_username_page}
-        menu.choice "Go Back To Main Menu", -> {main_menu}
-      end
-    end
+    puts "\nYour current username is \"#{user.username}\". What would you like your new username to be?"
+    new_username = prompt_and_validate_username
+    user.username = new_username
+    user.save
+    puts "\nUsername Successfully Changed to \"#{user.username}\"!"
+    prompt.select(" ") { |menu| menu.choice "Go Back To Main Menu", -> {main_menu} }
   end
 
   def delete_account_page
