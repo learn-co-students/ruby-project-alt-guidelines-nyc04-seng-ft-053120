@@ -639,6 +639,7 @@ class Interface
     project.ownership.delete
     # deletes the project
     project.delete
+    @user = project.user
     prompt.select("\n", cycle: true) { |menu| menu.choice "Go Back to Main Menu", -> { main_menu }}
   end
 
