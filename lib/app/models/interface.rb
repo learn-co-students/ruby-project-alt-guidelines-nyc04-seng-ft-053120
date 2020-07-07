@@ -159,7 +159,7 @@ class Interface
     if current_password == user.password
       prompt.select("\nAre you sure you want to delete your account? \nThis will delete ALL projects you created and ALL tasks you created. \nThis CANNOT be undone!\n", cycle: true) do |menu|
         menu.choice "Yes, Delete My Account", -> { delete_account }
-        menu.choice "No, Take Me Back To Main Menu", -> { main_menu}  
+        menu.choice "No, Take Me Back To Main Menu", -> { main_menu }  
       end
     else
       puts "\nDeletion unsuccessful. Password Incorrect."
