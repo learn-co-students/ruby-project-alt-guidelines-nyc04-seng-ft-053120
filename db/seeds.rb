@@ -307,8 +307,6 @@ end
 end
 
 
-
-
 # #userresource data Userresource.create(borough: ,practicioner:  ,user_id, resource_id)
 # #for user_id, you could assign the attribute user_id = user.id OR user: name
 # ur1 = Userresource.create(borough: , practicioner: , user_id: u1.id, resource: r1.id)
