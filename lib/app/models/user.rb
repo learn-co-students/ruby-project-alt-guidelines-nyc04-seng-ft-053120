@@ -3,11 +3,6 @@ class User < ActiveRecord::Base
   has_many :projects, through: :collaborations
   has_many :tasks
   
-  def change_username(new_username)
-    self.username = new_username
-    self.save
-  end
-
   def create_new_project(name, description)
     new_project = Project.create(name: name, description: description)
     new_project.save
