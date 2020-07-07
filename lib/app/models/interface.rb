@@ -26,7 +26,7 @@ class Interface
     puts "------------- Welcome to Twogether, A CLI Project Collaboration App -------------"
     puts 
 
-    prompt.select("♥ SELECT AN OPTION: \n", cycle: true) do |menu|
+    prompt.select("♥ SELECT AN OPTION: ", cycle: true) do |menu|
       menu.choice "Log In", -> { log_in }
       menu.choice "Register", -> { register }
     end
