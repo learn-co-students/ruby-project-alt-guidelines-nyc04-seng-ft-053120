@@ -7,7 +7,157 @@
 # User.destroy_all
 # Userresource.destroy_all
 # Resource.destroy_all
+    
 
+5.times do
+    Resource.create(
+        name: Faker::Name.name,
+        practitioner: "Psychiatrist",
+        location: Faker::Address.street_address,
+        borough: "Brooklyn",
+        url: Faker::Internet.url
+    )
+end
+
+5.times do
+    Resource.create(
+        name: Faker::Name.name,
+        practitioner: "Psychologist",
+        location: Faker::Address.street_address,
+        borough: "Brooklyn",
+        url: Faker::Internet.url
+    )
+end
+
+5.times do
+    Resource.create(
+        name: Faker::Name.name,
+        practitioner: "Counselor",
+        location: Faker::Address.street_address,
+        borough: "Brooklyn",
+        url: Faker::Internet.url
+    )
+end
+    
+5.times do
+    Resource.create(
+        name: Faker::Name.name,
+        practitioner: "Psychiatrist",
+        location: Faker::Address.street_address,
+        borough: "Manhattan",
+        url: Faker::Internet.url
+    )
+end
+
+5.times do
+    Resource.create(
+        name: Faker::Name.name,
+        practitioner: "Psychologist",
+        location: Faker::Address.street_address,
+        borough: "Manhattan",
+        url: Faker::Internet.url
+    )
+end
+
+5.times do
+    Resource.create(
+        name: Faker::Name.name,
+        practitioner: "Counselor",
+        location: Faker::Address.street_address,
+        borough: "Manhattan",
+        url: Faker::Internet.url
+    )
+end
+
+5.times do
+    Resource.create(
+        name: Faker::Name.name,
+        practitioner: "Psychiatrist",
+        location: Faker::Address.street_address,
+        borough: "Bronx",
+        url: Faker::Internet.url
+    )
+end
+
+5.times do
+    Resource.create(
+        name: Faker::Name.name,
+        practitioner: "Psychologist",
+        location: Faker::Address.street_address,
+        borough: "Bronx",
+        url: Faker::Internet.url
+    )
+end
+
+5.times do
+    Resource.create(
+        name: Faker::Name.name,
+        practitioner: "Counselor",
+        location: Faker::Address.street_address,
+        borough: "Bronx",
+        url: Faker::Internet.url
+    )
+end
+
+5.times do
+    Resource.create(
+        name: Faker::Name.name,
+        practitioner: "Psychiatrist",
+        location: Faker::Address.street_address,
+        borough: "Queens",
+        url: Faker::Internet.url
+    )
+end
+
+5.times do
+    Resource.create(
+        name: Faker::Name.name,
+        practitioner: "Psychologist",
+        location: Faker::Address.street_address,
+        borough: "Queens",
+        url: Faker::Internet.url
+    )
+end
+
+5.times do
+    Resource.create(
+        name: Faker::Name.name,
+        practitioner: "Counselor",
+        location: Faker::Address.street_address,
+        borough: "Queens",
+        url: Faker::Internet.url
+    )
+end
+
+5.times do
+    Resource.create(
+        name: Faker::Name.name,
+        practitioner: "Psychiatrist",
+        location: Faker::Address.street_address,
+        borough: "Staten Island",
+        url: Faker::Internet.url
+    )
+end
+
+5.times do
+    Resource.create(
+        name: Faker::Name.name,
+        practitioner: "Psychologist",
+        location: Faker::Address.street_address,
+        borough: "Staten Island",
+        url: Faker::Internet.url
+    )
+end
+
+5.times do
+    Resource.create(
+        name: Faker::Name.name,
+        practitioner: "Counselor",
+        location: Faker::Address.street_address,
+        borough: "Staten Island",
+        url: Faker::Internet.url
+    )
+end
 
 #user data User.create(username: ,password: ,name: ,age: ,borough: )
 user1 = User.create(username: "username_1", password: "username_1", name: "Sarah", age: 27, borough: "Brooklyn")
@@ -21,7 +171,143 @@ user8 = User.create(username: "username_8", password: "username_8", name: "Sarah
 user9 = User.create(username: "username_9", password: "username_9", name: "Sarah", age: 75, borough: "Queens")
 user10 = User.create(username: "username_10", password: "username_10", name: "Sarah", age: 55, borough: "Staten Island")
 
-#Faker::Name.name
+5.times do
+    Userresource.create(
+        user_id: rand(1..10),
+        resource_id: rand(1..10),
+        borough: "Brooklyn",
+        practitioner: "Psychiatrist"
+    )
+end
+
+5.times do
+    Userresource.create(
+        user_id: rand(1..10),
+        resource_id: rand(1..10),
+        borough: "Brooklyn",
+        practitioner: "Psychologist"
+    )
+end
+
+5.times do
+    Userresource.create(
+        user_id: rand(1..10),
+        resource_id: rand(1..10),
+        borough: "Brooklyn",
+        practitioner: "Counselor"
+    )
+end
+
+5.times do
+    Userresource.create(
+        user_id: rand(1..10),
+        resource_id: rand(1..10),
+        borough: "Manhattan",
+        practitioner: "Psychiatrist"
+    )
+end
+
+5.times do
+    Userresource.create(
+        user_id: rand(1..10),
+        resource_id: rand(1..10),
+        borough: "Manhattan",
+        practitioner: "Psychologist"
+    )
+end
+
+5.times do
+    Userresource.create(
+        user_id: rand(1..10),
+        resource_id: rand(1..10),
+        borough: "Manhattan",
+        practitioner: "Counselor"
+    )
+end
+
+5.times do
+    Userresource.create(
+        user_id: rand(1..10),
+        resource_id: rand(1..10),
+        borough: "Bronx",
+        practitioner: "Psychiatrist"
+    )
+end
+
+5.times do
+    Userresource.create(
+        user_id: rand(1..10),
+        resource_id: rand(1..10),
+        borough: "Bronx",
+        practitioner: "Psychologist"
+    )
+end
+
+5.times do
+    Userresource.create(
+        user_id: rand(1..10),
+        resource_id: rand(1..10),
+        borough: "Bronx",
+        practitioner: "Counselor"
+    )
+end
+
+5.times do
+    Userresource.create(
+        user_id: rand(1..10),
+        resource_id: rand(1..10),
+        borough: "Queens",
+        practitioner: "Psychiatrist"
+    )
+end
+
+5.times do
+    Userresource.create(
+        user_id: rand(1..10),
+        resource_id: rand(1..10),
+        borough: "Queens",
+        practitioner: "Psychologist"
+    )
+end
+
+5.times do
+    Userresource.create(
+        user_id: rand(1..10),
+        resource_id: rand(1..10),
+        borough: "Queens",
+        practitioner: "Counselor"
+    )
+end
+
+5.times do
+    Userresource.create(
+        user_id: rand(1..10),
+        resource_id: rand(1..10),
+        borough: "Staten Island",
+        practitioner: "Psychiatrist"
+    )
+end
+
+5.times do
+    Userresource.create(
+        user_id: rand(1..10),
+        resource_id: rand(1..10),
+        borough: "Staten Island",
+        practitioner: "Psychologist"
+    )
+end
+
+5.times do
+    Userresource.create(
+        user_id: rand(1..10),
+        resource_id: rand(1..10),
+        borough: "Staten Island",
+        practitioner: "Counselor"
+    )
+end
+
+
+
 
 # #userresource data Userresource.create(borough: ,practicioner:  ,user_id, resource_id)
 # #for user_id, you could assign the attribute user_id = user.id OR user: name
@@ -31,4 +317,4 @@ user10 = User.create(username: "username_10", password: "username_10", name: "Sa
 # #resource data Resource.create(resource_id, name:, location:, zipcode: ,url:)
 # r1 = Resource.create(resource_id: 1, name: "myTherapyNYC" , location: "928 Broadway, Suite 405/806, NYC 10010" , zipcode: "10010", url: "https://mytherapynyc.com/")
 
-puts "done seeding!"
+#puts "done seeding!"

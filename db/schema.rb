@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 2020_07_06_031402) do
     t.integer "user_id"
     t.integer "resource_id"
     t.string "borough"
-    t.string "practicioner"
+    t.string "practitioner"
   end
 
   create_table "users", force: :cascade do |t|
