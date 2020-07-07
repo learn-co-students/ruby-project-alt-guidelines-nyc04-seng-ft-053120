@@ -48,7 +48,7 @@ class Interface
     user_found = User.find_by(username: username_input, password: password_input)
 
     if !user_found
-      puts "\nSorry, invalid username or password"
+      puts "\nSorry, invalid username and/or password"
       prompt.select(" ", cycle: true) do |menu|
         menu.choice "Try Again", -> {log_in} 
         menu.choice "Go Back", -> {log_in_or_register_page} 
@@ -157,14 +157,9 @@ class Interface
     puts
     current_password = prompt.mask("♥ Please Verify Your Password: ")
     if current_password == user.password
-      prompt.select("\nAre you sure you want to delete your account? This CANNOT be undone!", cycle: true) do |menu|
-        menu.choice "Yes, Delete My Account", -> do
-          user.delete
-          print "\nYour account has been deleted. Taking you back to Log In page"
-          2.times { |i| transition_to_new_page }
-          log_in_or_register_page
-        end
-        menu.choice "No, Take Me Back To Main Menu", -> {main_menu} 
+      prompt.select("\nAre you sure you want to delete your account? \nThis will delete ALL projects you created and ALL tasks you created. \nThis CANNOT be undone!\n", cycle: true) do |menu|
+        menu.choice "Yes, Delete My Account", -> { delete_account }
+        menu.choice "No, Take Me Back To Main Menu", -> { main_menu}  
       end
     else
       puts "\nDeletion unsuccessful. Password Incorrect."
@@ -173,6 +168,32 @@ class Interface
         menu.choice "Go Back To Main Menu", -> {main_menu} 
       end
     end
+  end
+
+  def delete_account
+    # Delete all collaboration instances associated with user
+    all_user_collaborations = Collaboration.all.where(user: user)
+    all_user_collaborations.each { |collab| collab.delete }
+  
+    all_user_ownerships = Ownership.all.where(user: user)
+
+    # Delete all projects that user created through ownership
+    all_projects_user_created = all_user_ownerships.map { |ownership| ownership.project }
+    all_projects_user_created.each { |project| project.delete }
+
+    # Delete all tasks user created
+    all_user_tasks = Task.where(user: user)
+    all_user_tasks.each { |task| task.delete }
+
+    # Delete all ownership instances associated with user
+    all_user_ownerships.each { |ownership| ownership.delete }
+
+    # Finally delete user
+    user.delete
+
+    print "\nYour account has been deleted. Taking you back to Log In page"
+    2.times { |i| transition_to_new_page }
+    log_in_or_register_page
   end
 
   def create_a_new_project_page
@@ -289,8 +310,8 @@ class Interface
       puts "This project doesn't have any tasks right now."
     else
       all_tasks.each do |task|
-        completion_status = "Not Yet!"
-        completion_status = "Yep!" if task.completed 
+        completion_status = "Not Yet! ✖"
+        completion_status = "Yep! ✔" if task.completed 
         puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         puts
         puts "TASK → #{task.description}"
@@ -471,6 +492,7 @@ class Interface
 
     if choices.empty?
       puts "You're not a part of any project right now."
+      prompt.select("", cycle: true) { |menu| menu.choice "Go Back to Main Menu", -> { main_menu }}
     else
       project_selected = prompt.select("♥ Select a project to stop collaborating: ", choices)
       prompt.select("\nAre you sure you want to remove yourself as collaborator from \"#{project_selected.name}\"?", cycle: true) do |menu| 
