@@ -349,6 +349,7 @@ class Interface
       menu.choice "Go Back to Main Menu", -> { main_menu }
     end
   end
+
     def view_completed_tasks_page(project)
         header
         puts "ALL COMPLETED TASKS - #{project.name}"
@@ -362,6 +363,7 @@ class Interface
             menu.choice "Go Back to Main Menu", -> { main_menu }
         end   
     end
+    
     def view_incomplete_tasks_page(project)
         header
         puts "ALL INCOMPLETE TASKS - #{project.name}"
