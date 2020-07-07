@@ -34,62 +34,40 @@ end
         #new user enters username, password, name, age, and borough
             #attributes meets integer/string requirements OR user is prompt to reenter
 
-        #new user prompted to create a new search based on search criteria[location, practicioner]
-            #if location -> user chooses a borough from a list of boroughs
-                 #returns resources where resource.borough == borough selected in list format    
-                 #new user can view individual search result
-                 #new user can save the resource to userresource, create a new search, OR logout
-                     #saves resource to userresource 
+#Userresource
+        #new user prompted to create a new search based on location
+            #location -> user is prompted to choose a borough
+            #then user is prompted to choose a practicioner 
+                 #returns resources list  
+                 #new user can view, save or delete search result
                      #creates a new search
-                     #view userresources (saved resources)
-                        #if and only if userresource.count > 0, display userresources list
-                     #logs user out
+                     #end session 
+                        #goodbye message 
+    
 
-            #if practicioner -> user chooses a praticioner from a list of praticioners
-                #returns resources where resource.practicioner == practicioner selected in list format    
-                 #new user can view individual search result
-                 #new user can save the resource to userresource, create a new search, OR logout
-                     #saves resource to userresource 
-                     #creates a new search
-                     #view userresources (saved resources)
-                        #if and only if userresource.count > 0, display userresources list
-                     #logs user out
-
+ #User                       
     #if returning user -> user signs in using username and password
         #returning user inputs username and password
         #verifies if username and password combo is correct
-             #if not correct-prompts user to enter username or password again
+             #if not correct-prompts user to reenter username or password again
             
              #if correct - logs returning user in 
-                
-        #returning user can [view resources, create a new search]
-            #if view resources -> display a list of saved resources 
-                #returning user can select individual userresource from list
-                #user can view userresource details
-                    #delete resource from list
-                    #user can return to back to userresources list 
+
+#Userresource
+        #returning user can [view userresources, create a new search]
+            #if view userresources -> display a list of saved resources 
+                #returning user can view, delete or create a new search 
                     
             #if create a new search -> 
-                #returning user prompted to create a new search based on search criteria[location, practicioner]
-                     #if location -> user chooses a borough from a list of boroughs
-                         #returns resources where resource.borough == borough selected in list format    
-                         #new user can view individual search result
-                         #new user can save the resource to userresource, create a new search, OR logout
-                            #saves resource to userresource 
-                            #creates a new search
-                            #view userresources (saved resources)
-                                ##if and only if userresource.count > 0, display userresources list
-                            #logs user out
+                #location -> user is prompted to choose a borough
+                #then user is prompted to choose a practicioner 
+                     #returns resources list  
+                     #new user can view, save or delete search result
+                         #creates a new search
+                         #end session 
+                             #goodbye message
+                
 
-                     #if practicioner -> user chooses a praticioner from a list of praticioners
-                        #returns resources where resource.practicioner == practicioner selected in list format    
-                        #new user can view individual search result
-                        #new user can save the resource to userresource, create a new search, OR logout
-                             #saves resource to userresource 
-                             #creates a new search
-                             #view userresources (saved resources)
-                                #if and only if userresource.count > 0, display userresources list
-                             #logs user out
 
 
     
