@@ -1,5 +1,3 @@
-require 'date'
-
 class Interface
   attr_accessor :prompt, :user
 
@@ -25,6 +23,8 @@ class Interface
     header
     puts "------------- Welcome to Twogether, A CLI Project Collaboration App -------------"
     puts 
+    random_quote
+    puts
 
     prompt.select("♥ SELECT AN OPTION: ", cycle: true) do |menu|
       menu.choice "Log In", -> { log_in }
@@ -109,13 +109,21 @@ class Interface
       menu.choice "View My Current Projects", -> { view_current_projects_page }
       menu.choice "Create a New Project", -> { create_a_new_project_page }
       menu.choice "Collaborate On An Existing Project", -> { collaborate_on_an_existing_project_page }
-      menu.choice "Remove Myself From A Project", -> { remove_from_project_page }
       menu.choice "Manage Projects I Created\n", -> { projects_i_created_page }
       menu.choice "Change Username", -> { change_username_page }
       menu.choice "Change Password", -> { change_password_page }
       menu.choice "Delete Account", -> { delete_account_page }
       menu.choice "Log Out", -> { log_in_or_register_page }
     end
+  end
+
+  def random_quote
+    # puts a random inspirational quote
+    response = RestClient.get("https://type.fit/api/quotes")
+    quotes = JSON.parse(response)
+    random_quote_hash = quotes[rand(0...quotes.length)]
+    puts "\"#{random_quote_hash["text"]}\""
+    puts "- #{random_quote_hash["author"]}"
   end
 
   def change_password_page
@@ -262,7 +270,7 @@ class Interface
         menu.choice "Go Back to Main Menu", -> { main_menu }
       end
     else
-      project_selected = prompt.select("\n♥ Select a project:\n", choices, cycle: true)
+      project_selected = prompt.select("\n♥ Select a project:\n", choices, cycle: true, per_page: 10)
       project_menu_page(project_selected)
     end
   end
@@ -275,11 +283,12 @@ class Interface
     puts "Created By: #{project.user.username}"
     puts
 
-    prompt.select("♥ Select from the following options: \n", cycle: true) do |menu|
+    prompt.select("♥ Select from the following options: \n", cycle: true, per_page: 10) do |menu|
       menu.choice "View All Project Tasks", -> { view_all_project_tasks_page(project) }
       menu.choice "View/Update My Tasks", -> { view_or_update_task_page(project) }
       menu.choice "Add a New Task", -> { add_a_new_task_page(project) }
-      menu.choice "View All Project Collaborators\n", -> { see_all_project_collaborators_page(project) }
+      menu.choice "View All Project Collaborators", -> { see_all_project_collaborators_page(project) }
+      menu.choice "Stop Collaborating on This Project\n", -> { remove_from_project_page(project) }
       menu.choice "Go Back to View All Projects", -> { view_current_projects_page }
       menu.choice "Go Back to Main Menu", -> { main_menu }
     end
@@ -352,7 +361,7 @@ class Interface
         menu.choice "Go Back to Main Menu", -> { main_menu }
       end
     else
-      task_selected = prompt.select("♥ Select a task to edit or mark complete: ", choices)
+      task_selected = prompt.select("♥ Select a task to edit or mark complete: ", choices, cycle: true, per_page: 10)
       task_page(project, task_selected)
     end
   end
@@ -364,7 +373,7 @@ class Interface
     puts "#{project.name} - #{task.description}"
     puts
 
-    prompt.select("♥ Select from the following:\n", cycle: true) do |menu|
+    prompt.select("♥ Select from the following:\n", cycle: true, per_page: 10) do |menu|
       menu.choice "Mark Completed", -> { mark_complete(project, task) }
       menu.choice "Edit Task", -> { edit(project, task) }
       menu.choice "Change Due Date\n", -> { change_due_date(project, task) }
@@ -488,32 +497,38 @@ class Interface
     end
   end
 
-  def remove_from_project_page
+  def remove_from_project_page(project)
     header
-    puts "REMOVE MYSELF FROM A PROJECT"
-    puts
-
-    choices = Hash.new
-    user.projects.each { |project| choices[project.name] = project }
-
-    if choices.empty?
-      puts "You're not a part of any project right now."
-      prompt.select("", cycle: true) { |menu| menu.choice "Go Back to Main Menu", -> { main_menu }}
-    else
-      project_selected = prompt.select("♥ Select a project to stop collaborating: ", choices)
-      prompt.select("\nAre you sure you want to remove yourself as collaborator from \"#{project_selected.name}\"?", cycle: true) do |menu| 
-        menu.choice "Yes, remove me as collaborator", -> { remove_from_project(project_selected) }
-        menu.choice "No, take me back to Main Menu", -> { main_menu } 
-      end 
+    puts "REMOVE MYSELF AS COLLABORATOR FROM A PROJECT"
+    prompt.select("\nAre you sure you want to remove yourself as collaborator from \"#{project.name}\"? \nThis will delete ALL tasks you created in this project.\n", cycle: true) do |menu|
+      menu.choice "Yes, Remove Myself As Collaborator", -> { remove_from_project(project) }
+      menu.choice "No, Take Me Back to Project Menu", -> { project_menu_page(project) }
     end
   end
 
   def remove_from_project(project)
-    collaboration = Collaboration.find_by(user: user, project: project)
-    puts "\nRemoval success. You're no longer a collaborator for \"#{project.name}\"."
-    deleted_collaboration = collaboration.delete   
-    @user = deleted_collaboration.user
-    prompt.select("\n") { |menu| menu.choice "Go Back to Main Menu", -> { main_menu } }
+    header
+    puts "REMOVE MYSELF AS COLLABORATOR FROM A PROJECT"
+    puts
+    # if the user is the creator of the project, they cannot remove themselves as collaborator, direct them to manage project page
+    if user == project.user
+      puts "You cannot remove yourself as collaborator because you are the creator of this project!"
+
+      prompt.select("\n", cycle: true) do |menu|
+      menu.choice "Go Back to Project Menu", -> { project_menu_page(project) }
+      menu.choice "Go Back To Main Menu", -> { main_menu }
+      end
+    else
+      collaboration = Collaboration.find_by(user: user, project: project)
+      # delete tasks on this project that the user has created
+      Task.where(user: user).each { |task| task.delete }
+      # delete the collaboration between user and project
+      deleted_collaboration = collaboration.delete   
+      @user = deleted_collaboration.user
+
+      puts "\nRemoval success. You're no longer a collaborator for \"#{project.name}\"."
+      prompt.select("\n") { |menu| menu.choice "Go Back to Main Menu", -> { main_menu } }
+    end
   end
 
   def projects_i_created_page
@@ -539,7 +554,7 @@ class Interface
     header
     puts "PROJECT I CREATED - #{project.name}"
     puts 
-    prompt.select("♥ Select from the choices below: \n", cycle: true) do |menu|
+    prompt.select("♥ Select from the choices below: \n", cycle: true, per_page: 10) do |menu|
       menu.choice "Edit Project's Name", -> { edit_project_name_page(project) }
       menu.choice "Edit Project's Description", -> { edit_project_description_page(project) }
       menu.choice "See Collaborators", -> { see_all_project_collaborators_page(project) }
