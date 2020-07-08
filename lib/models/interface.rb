@@ -7,7 +7,7 @@ class Interface
 
 #Outputs a Welcome message to user 
   def greeting
-        puts "Welcome to "
+        puts "Welcome to the NYC Mental Resources App!"
     end
 
 # #Asks user if [new user, returning user] 
@@ -26,10 +26,7 @@ class Interface
                 User.returning_user
         end
     end
-end
-
     
-        
 #Userresource
         #new user prompted to create a new search based on location
             #location -> user is prompted to choose a borough
@@ -39,7 +36,41 @@ end
                      #creates a new search
                      #end session 
                         #goodbye message 
-    
+    def main_menu
+        system "clear"
+        puts "Welcome, #{user.username}"
+        prompt.select("What would you like to do?") do |menu|
+            menu.choice "Create a new search", -> {self.new_search}
+            menu.choice "View saved resources", -> {self.view_saved_userresource} #another way to name class methods?
+            menu.choice "Delete a saved resource", -> {self.delete_userresource}
+            menu.choice "Logout", -> {self.logout}
+        end
+    end
+
+    #self.new_search
+    def new_search
+        system "clear"
+        self.prompt.select("Please select a Borough to search by:") do |menu|
+            menu.choice "Brookyln", -> {Resources.borough}
+            menu.choice "Bronx", -> {Resources.borough}
+            menu.choice "Manhattan", -> {Resources.borough}
+            menu.choice "Queens", -> {Resources.borough}
+            menu.choice "Staten Island", -> {Resources.borough}
+            menu.choice "Main Menu"
+        end
+    end
+
+    #self.view_saved_userresource
+    def view_saved_userresource
+        system "clear"
+        user.view_saved_userresource()
+        main_menu
+    end
+    #self.delete_userresource
+
+    def logout
+        puts "Thank you. Please come again"
+    end
 
  #User                       
     #if returning user -> user signs in using username and password
@@ -62,3 +93,4 @@ end
                          #creates a new search
                          #end session 
                              #goodbye message        
+end
