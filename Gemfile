@@ -10,3 +10,4 @@ gem "faker"
 gem "rake"
 
 gem 'tty-prompt'
+gem 'tty-table'
