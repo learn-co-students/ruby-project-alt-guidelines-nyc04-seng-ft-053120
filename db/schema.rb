@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 2020_07_06_031402) do
     t.string "name"
     t.string "practitioner"
     t.string "location"
-    t.integer "borough"
+    t.string "borough"
     t.string "url"
   end
 

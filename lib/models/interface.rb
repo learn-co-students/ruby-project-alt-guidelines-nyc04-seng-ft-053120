@@ -30,14 +30,15 @@ class Interface
     def main_menu
         system "clear"
         puts "Welcome to the NYC Mental Health Services App!"
-        prompt.select("What would you like to do?") do |menu|
-            menu.choice "Create a new search", -> {self.new_search}
+        self.prompt.select("What would you like to do?") do |menu|
+            menu.choice "Create a new search", -> {Resource.new_search}
             menu.choice "View saved resources", -> {self.view_saved_userresource} #another way to name class methods?
             menu.choice "Delete a saved resource", -> {self.delete_userresource}
-            menu.choice "Logout", -> {Interface.logout}
+            menu.choice "Logout", -> {self.logout}
         end
     end
 end
+
 
 #Userresource
         #new user prompted to create a new search based on location
@@ -49,40 +50,45 @@ end
                      #end session 
                         #goodbye message 
 
-    def new_search
-        system "clear"
-        self.prompt.select("Please select a Borough to search by:") do |menu|
-             menu.choice "Brookyln" #, -> {Resources.borough}
-             menu.choice "Bronx", -> {Resources.borough}
-             menu.choice "Manhattan", -> {Resources.borough}
-             menu.choice "Queens", -> {Resources.borough}
-             menu.choice "Staten Island", -> {Resources.borough}
-             menu.choice "Main Menu"
-        end
-    end
+    # def new_search
+    #     #system "clear"
+    #     puts "New Search"
+    #     self.prompt.select("Please select a Borough to search by:") do |menu|
+    #          menu.choice "Brookyln", -> {Resource.search}
+    #          menu.choice "Bronx", -> {Resource.search}
+    #          menu.choice "Manhattan", -> {Resource.search}
+    #          menu.choice "Queens", -> {Resource.search}
+    #          menu.choice "Staten Island", -> {Resource.search}
+    #          menu.choice "Return to the Main Menu", -> {self.search}
+    #       end
+    # end
 
-    #self.view_saved_userresource
-    def view_saved_userresource
-        system "clear"
-        user.view_saved_userresource()
-        main_menu
-    end
-    #self.delete_userresource
 
-    def logout
-        puts "Thank you. Please come again"
-    end
+#     #self.view_saved_userresource
+#     def view_saved_userresource
+#         system "clear"
+#         user.view_saved_userresource()
+#         main_menu
+#     end
 
-#Userresource
-        #returning user can [view userresources, create a new search]
-            #if view userresources -> display a list of saved resources 
-                #returning user can view, delete or create a new search 
+
+#     #self.delete_userresource
+
+#     def self.logout
+#         puts "Thank you. Please come again"
+#         exit!
+#     end
+
+# #Userresource
+#         #returning user can [view userresources, create a new search]
+#             #if view userresources -> display a list of saved resources 
+#                 #returning user can view, delete or create a new search 
                     
-            #if create a new search -> 
-                #location -> user is prompted to choose a borough
-                #then user is prompted to choose a practicioner 
-                     #returns resources list  
-                     #new user can view, save or delete search result
-                         #creates a new search
-                         #end session 
-                             #goodbye message        
+#             #if create a new search -> 
+#                 #location -> user is prompted to choose a borough
+#                 #then user is prompted to choose a practicioner 
+#                      #returns resources list  
+#                      #new user can view, save or delete search result
+#                          #creates a new search
+#                          #end session 
+#                              #goodbye message        

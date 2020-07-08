@@ -4,7 +4,7 @@ class CreateResources < ActiveRecord::Migration[5.2]
       t.string :name
       t.string :practitioner
       t.string :location
-      t.integer :borough
+      t.string :borough
       t.string :url
     end
   end

@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+    belongs_to :userresources
     has_many :resources, through: :userresources 
 
 
@@ -21,6 +22,13 @@ class User < ActiveRecord::Base
         puts "Welcome #{user}, name #{name}, living in #{boro} we hope you find what you need! :sunglasses:"
     end
     
+#User                       
+    #if returning user -> user signs in using username and password
+        #returning user inputs username and password
+        #verifies if username and password combo is correct
+             #if not correct-prompts user to reenter username or password again
+            
+             #if correct - logs returning user in 
 
     #self.returning_user
     def self.returning_user
