@@ -343,8 +343,8 @@ class Interface
 
     prompt.select("\n", cycle: true) do |menu|
       menu.choice "Add a New Task", -> { add_a_new_task_page(project) }
-      menu.choice "View Completed Task", -> { view_completed_tasks_page(project) }
-      menu.choice "View Incomplete Task", -> { view_incomplete_tasks_page(project) }
+      menu.choice "View Completed Tasks", -> { view_completed_tasks_page(project) }
+      menu.choice "View Incompleted Tasks", -> { view_incomplete_tasks_page(project) }
       menu.choice "Go Back to Project Menu", -> { project_menu_page(project) }
       menu.choice "Go Back to Main Menu", -> { main_menu }
     end
@@ -355,7 +355,7 @@ class Interface
         puts "ALL COMPLETED TASKS - #{project.name}"
         puts
         completed_tasks = project.tasks.select { |task| task.completed == true }
-        completed_tasks.each { |task| puts "☺#{task.description}, being done by #{task.user.username}" }
+        completed_tasks.each { |task| puts "☺#{task.description}, completed by #{task.user.username}" }
       
         prompt.select("\n", cycle: true) do |menu|
             menu.choice "View All Project Tasks", -> { view_all_project_tasks_page(project) }
@@ -369,7 +369,7 @@ class Interface
         puts "ALL INCOMPLETE TASKS - #{project.name}"
         puts
         incomplete_tasks = project.tasks.select {|task| !task.completed }
-        incomplete_tasks.each { |task| puts "☺#{task.description}, has been working by #{task.user.username}" }
+        incomplete_tasks.each { |task| puts "☺#{task.description}, being done by #{task.user.username}" }
 
         prompt.select("\n", cycle: true) do |menu|
             menu.choice "View All Project Tasks", -> { view_all_project_tasks_page(project) }
@@ -419,6 +419,7 @@ class Interface
   def mark_complete(project, task)
     header
     task.change_completed
+    @user = task.user
     
     puts "Task marked complete. Well done!"
     prompt.select("\n", cycle: true) do |menu|
@@ -432,6 +433,7 @@ class Interface
     new_description = prompt.ask("♥ Enter new description: ")
     task.description = new_description
     task.save
+    @user = task.user
     puts "\nTask description updated!"
 
     prompt.select("\n", cycle: true) do |menu|
@@ -492,7 +494,8 @@ class Interface
     puts 
     task_due_date = prompt_for_date
 
-    Task.create(description: task_description, completed: false, due_date: task_due_date, project: project, user: user)
+    task_created = Task.create(description: task_description, completed: false, due_date: task_due_date, project: project, user: user)
+    @user = task_created.user
 
     puts "\nTask successfully created!"
 
