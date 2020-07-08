@@ -26,7 +26,19 @@ class Interface
                 User.returning_user
         end
     end
-    
+
+    def main_menu
+        system "clear"
+        puts "Welcome to the NYC Mental Health Services App!"
+        prompt.select("What would you like to do?") do |menu|
+            menu.choice "Create a new search", -> {self.new_search}
+            menu.choice "View saved resources", -> {self.view_saved_userresource} #another way to name class methods?
+            menu.choice "Delete a saved resource", -> {self.delete_userresource}
+            menu.choice "Logout", -> {Interface.logout}
+        end
+    end
+end
+
 #Userresource
         #new user prompted to create a new search based on location
             #location -> user is prompted to choose a borough
@@ -36,27 +48,16 @@ class Interface
                      #creates a new search
                      #end session 
                         #goodbye message 
-    def main_menu
-        system "clear"
-        puts "Welcome, #{user.username}"
-        prompt.select("What would you like to do?") do |menu|
-            menu.choice "Create a new search", -> {self.new_search}
-            menu.choice "View saved resources", -> {self.view_saved_userresource} #another way to name class methods?
-            menu.choice "Delete a saved resource", -> {self.delete_userresource}
-            menu.choice "Logout", -> {self.logout}
-        end
-    end
 
-    #self.new_search
     def new_search
         system "clear"
         self.prompt.select("Please select a Borough to search by:") do |menu|
-            menu.choice "Brookyln", -> {Resources.borough}
-            menu.choice "Bronx", -> {Resources.borough}
-            menu.choice "Manhattan", -> {Resources.borough}
-            menu.choice "Queens", -> {Resources.borough}
-            menu.choice "Staten Island", -> {Resources.borough}
-            menu.choice "Main Menu"
+             menu.choice "Brookyln" #, -> {Resources.borough}
+             menu.choice "Bronx", -> {Resources.borough}
+             menu.choice "Manhattan", -> {Resources.borough}
+             menu.choice "Queens", -> {Resources.borough}
+             menu.choice "Staten Island", -> {Resources.borough}
+             menu.choice "Main Menu"
         end
     end
 
@@ -72,14 +73,6 @@ class Interface
         puts "Thank you. Please come again"
     end
 
- #User                       
-    #if returning user -> user signs in using username and password
-        #returning user inputs username and password
-        #verifies if username and password combo is correct
-             #if not correct-prompts user to reenter username or password again
-            
-             #if correct - logs returning user in 
-
 #Userresource
         #returning user can [view userresources, create a new search]
             #if view userresources -> display a list of saved resources 
@@ -93,4 +86,3 @@ class Interface
                          #creates a new search
                          #end session 
                              #goodbye message        
-end

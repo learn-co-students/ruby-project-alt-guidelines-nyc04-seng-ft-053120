@@ -9,12 +9,19 @@ class User < ActiveRecord::Base
         pass = prompt.ask("What do you want your password to be?")
         name = prompt.ask("Enter your first name:")
         age = prompt.ask("How old are you?")
-        boro = prompt.ask("What borough do you live in?")
+        boro = prompt.select("What borough do you live in?") do |menu|
+            menu.choice 'Brooklyn'
+            menu.choice 'Bronx'
+            menu.choice 'Manhattan'
+            menu.choice 'Staten Island'
+            menu.choice 'Queens'
+            end
 
         User.create(username: user, password: pass, age: age, borough:boro)
-        puts "Welcome #{user} we hope you find what you need"
+        puts "Welcome #{user}, name #{name}, living in #{boro} we hope you find what you need! :sunglasses:"
     end
     
+
     #self.returning_user
     def self.returning_user
     prompt = TTY::Prompt.new 
