@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 class Customer < ActiveRecord::Base
     has_many :orders
@@ -72,72 +71,11 @@ class Customer < ActiveRecord::Base
         #them (choose_item) then updating that order with a new item, and saving while printing out to screen that the new item has been updated
         def update_order
             if orders.length > 0
-=======
-class Customer < ActiveRecord::Base
-    has_many :orders
-    has_many :items, through: :orders
-
-    #Search username among customers and return customer instance
-    def self.get_instance(username)
-        get_instance = Customer.find_by(customer_name: username)
-        if get_instance
-            sleep(1)
-            puts "Welcome #{username}!"
-            get_instance
-        else
-            sleep(1)
-            puts "Sorry! That name doesn't exist!"
-        end
-    end
-
-      #Search customer among orders and return array of customer's orders
-      def orders
-          Order.where(customer: self)
-      end
-
-      #Iterate over customer's orders and display each order
-      def view_order
-        if orders.length>0
-          sleep(1)
-          puts "You have #{orders.length} order(s)!"
-          sleep(1)
-          orders.each { |order| puts "#{order} #{order.item.item_name}" }
-        else
-          sleep(1)
-          puts "Sorry, you have no orders!"
-        end
-      end
-
-      #Give option to choose an item from all items
-      def choose_item
-        item_names= Item.all.map { |item| {item.item_name => item} }
-        TTY::Prompt.new.select("Choose an item:", item_names)
-      end
-
-      #Give option to choose an order from customer's orders
-      def choose_order
-          order_item_names = orders.map { |order| {order.item.item_name => order} }
-          TTY::Prompt.new.select("Choose an order:", order_item_names)
-      end
-
-        #Create order with the item chosen by customer
-        def create_order
-          chosen_item = choose_item
-          create_order = Order.create(customer: self, item: chosen_item)
-          sleep(1)
-          puts "Your order #{create_order} is created for #{chosen_item.item_name}!"
-        end
-
-        #Update the order chosen by customer with the new item chosen by customer
-        def update_order
-          if orders.length>0
->>>>>>> efc8b8a504419dbd219b99baabae7c129d73a4cc
             chosen_order = choose_order
             chosen_item = choose_item
             update_order = Order.find(chosen_order.id)
             update_order.item = chosen_item
             update_order.save
-<<<<<<< HEAD
             puts"-------------------------------------------------------------------"
             puts "Your order #{chosen_order} is updated with #{chosen_item.item_name}!"
             puts"-------------------------------------------------------------------"
@@ -163,28 +101,3 @@ class Customer < ActiveRecord::Base
             end
         end
 end
-=======
-            sleep(1)
-            puts "Your order #{chosen_order} is updated with #{chosen_item.item_name}!"
-          else
-            sleep(1)
-            puts "Sorry, you have no orders!"
-          end
-        end
-
-      #Delete the order chosen by customer
-      def delete_order
-        if orders.length>0
-          chosen_order = choose_order
-          Order.destroy(chosen_order.id)
-          sleep(1)
-          puts "Your order #{chosen_order} for #{chosen_order.item.item_name} is deleted!" 
-        else
-          sleep(1)
-          puts "Sorry, you have no orders!"
-        end
-      end
-    
-end
-    
->>>>>>> efc8b8a504419dbd219b99baabae7c129d73a4cc
