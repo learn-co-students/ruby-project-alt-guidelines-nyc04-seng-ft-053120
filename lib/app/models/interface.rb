@@ -121,11 +121,10 @@ class Interface
     # puts a random inspirational quote
     response = RestClient.get("https://type.fit/api/quotes")
     quotes = JSON.parse(response)
-    random_quote_hash = quotes[rand(0...quotes.length)]
+    random_quote_hash = quotes.sample
     random_quote_text = random_quote_hash["text"]
     random_quote_author = random_quote_hash["author"]
     random_quote_author = "Unknown" if random_quote_author == nil
-
     puts "\"#{random_quote_text}\""
     puts "- #{random_quote_author}"
   end
@@ -136,16 +135,15 @@ class Interface
     current_password = prompt.mask("♥ Enter Your Current Password: ")
     if current_password == user.password 
       puts "\nInput New Password Below"
-      new_password = prompt_and_validate_password
-      user.password = new_password
+      user.password = prompt_and_validate_password
       user.save
       puts "\nPassword Successfully Changed!"
-      prompt.select(" ") { |menu| menu.choice "Go Back To Main Menu", -> {main_menu} }
+      prompt.select(" ") { |menu| menu.choice "Go Back To Main Menu", -> { main_menu } }
     else
       puts "Password Incorrect"
       prompt.select(" ", cycle: true) do |menu|
-        menu.choice "Try Again", -> {change_password_page} 
-        menu.choice "Go Back To Main Menu", -> {main_menu} 
+        menu.choice "Try Again", -> { change_password_page } 
+        menu.choice "Go Back To Main Menu", -> { main_menu } 
       end
     end
   end
@@ -154,11 +152,10 @@ class Interface
     header
     puts "CHANGE YOUR USERNAME\n"
     puts "\nYour current username is \"#{user.username}\". What would you like your new username to be?"
-    new_username = prompt_and_validate_username
-    user.username = new_username
+    user.username = prompt_and_validate_username
     user.save
     puts "\nUsername Successfully Changed to \"#{user.username}\"!"
-    prompt.select(" ") { |menu| menu.choice "Go Back To Main Menu", -> {main_menu} }
+    prompt.select(" ") { |menu| menu.choice "Go Back To Main Menu", -> { main_menu } }
   end
 
   def delete_account_page
