@@ -4,7 +4,8 @@ class Interface
     def initialize
       @prompt = TTY::Prompt.new
     end
-  
+    
+    #Display welcome message
     def welcome
         puts"               Welcome to"
         puts"                         ,--.          ,--."
@@ -13,14 +14,21 @@ class Interface
         puts"|  |  |  |\ '-'  ||  |   |  \ \\   --. |  |"
         puts"`--`--`--' `--`--'`--'   `--'`--'`----'`--'"
     end
-  
-    def get_instance
+
+    #Get user input
+    def user_input
       sleep(1)
       puts "Please enter your Markel username:"
-      username=gets.chomp
+      gets.chomp
+    end
+    
+    #Get customer instance
+    def get_instance
+      username = user_input
       Customer.get_instance(username)
     end
 
+    #Show menu
     def show_menu
       prompt.select("What would you like to do?") do |menu|
         menu.choice "Create Order", -> {self.create_order}
@@ -30,33 +38,39 @@ class Interface
         menu.choice "Exit", -> {self.exit}
     end
   end
-
+  
+  #Display customer's orders
   def view_order
     customer.view_order
-    sleep(3)
+    sleep(2)
     show_menu
   end
 
+  #Customer creates an order
   def create_order
     customer.create_order
-    sleep(3)
+    sleep(2)
     show_menu
   end
 
+  #Customer updates an order
   def update_order
     customer.update_order
-    sleep(3)
+    sleep(2)
     show_menu
   end
 
+  #Customer deletes an order
   def delete_order
     customer.delete_order
-    sleep(3)
+    sleep(2)
     show_menu
   end
   
+  #Customer exits the app
   def exit
-    puts "Thanks for visiting #{customer.customer_name}!"
+    sleep(1)
+    puts "Bye #{customer.customer_name}! Thanks for visiting!"
   end
 
 end
