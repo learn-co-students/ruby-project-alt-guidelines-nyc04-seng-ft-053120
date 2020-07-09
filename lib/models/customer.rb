@@ -8,11 +8,11 @@ class Customer < ActiveRecord::Base
        get_instance = Customer.find_by(customer_name: username)
         if get_instance
             sleep(1)
-            puts "Welcome #{username}!"
+            puts "Welcome #{username}!".colorize(:magenta)
              get_instance
         else
             sleep(1)
-            puts "Sorry! That name doesn't exist!"
+            puts "Sorry! That name doesn't exist!".colorize(:magenta)
         end
     end
       
@@ -26,28 +26,31 @@ class Customer < ActiveRecord::Base
       def view_order
         if orders.length > 0
             sleep(1)
-            puts "You have #{orders.length} order(s)!"
+            puts"---------------------"
+            puts "You have #{orders.length} order(s)!".colorize(:magenta)
+            puts"---------------------"
             sleep(1)
+            puts"==================================="
         orders.each { |order| puts "#{order} #{ order.item.item_name }" }
+            puts"==================================="
         else
             sleep(1)
-          puts "Sorry, you have no orders!"
+          puts "Sorry, you have no orders!".colorize(:magenta)
         end
       end
       
 
          #choose_item allows us to pick the item after choosing the order 
-      
-         def choose_item
+        def choose_item
             item_names = Item.all.map { |item| { item.item_name => item } }
-            TTY::Prompt.new.select("Choose an item:", item_names)
-          end
+            TTY::Prompt.new.select("Choose an item:".colorize(:light_gray).underline, item_names)
+        end
 
 
       #choose_order checks to see if we have an order, allows us to pick our items associated with our id, if we dont have any items, returns sorry, no orders
     def choose_order
         order_item_names = orders.map { |order| {order.item.item_name => order} }
-        TTY::Prompt.new.select("Choose an order:", order_item_names)
+        TTY::Prompt.new.select("Choose an order:".colorize(:light_gray).underline, order_item_names)
         
     end
 
@@ -59,9 +62,9 @@ class Customer < ActiveRecord::Base
           chosen_item = choose_item
           create_order = Order.create(customer: self, item: chosen_item)
           sleep(1)
-          puts "-------------------------------------------------"
+          puts "-------------------------------------------------------------------"
           puts "Your order #{create_order} is created for #{chosen_item.item_name}!"
-          puts "-------------------------------------------------"
+          puts "--------------------------------------------------------------------"
         end
 
         #update_order uses methods (choose_order) which allows user to see list of orders and choose 
@@ -73,10 +76,12 @@ class Customer < ActiveRecord::Base
             update_order = Order.find(chosen_order.id)
             update_order.item = chosen_item
             update_order.save
+            puts"-------------------------------------------------------------------"
             puts "Your order #{chosen_order} is updated with #{chosen_item.item_name}!"
+            puts"-------------------------------------------------------------------"
             else 
                 sleep(1)
-                puts "Sorry, you have no orders!"
+                puts "Sorry, you have no orders!".colorize(:magenta)
             end
         end
       
@@ -87,11 +92,12 @@ class Customer < ActiveRecord::Base
           chosen_order = choose_order
           Order.destroy(chosen_order.id)
           sleep(1)
-
-          puts "Your order #{chosen_order} for #{chosen_order.item.item_name} is deleted!" 
+          puts"-------------------------------------------------------------------"
+          puts "Your order #{chosen_order} for #{chosen_order.item.item_name} is deleted!".colorize(:white)
+          puts"-------------------------------------------------------------------"
             else 
                 sleep(1)
-                puts "Sorry, you have no orders!"
+                puts "Sorry, you have no orders!".colorize(:magenta)
             end
         end
 end

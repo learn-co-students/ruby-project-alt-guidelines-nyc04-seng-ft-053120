@@ -6,18 +6,21 @@ class Interface
 
     #displays welcome message 
      def welcome
-        puts"               Welcome to"
-        puts"                         ,--.          ,--."
-        puts",--,--,--. ,--,--.,--.--.|  |,-. ,---. |  |"
-        puts"|        |' ,-.  ||  .--'|     /| .-. :|  |"
-        puts"|  |  |  |\ '-'  ||  |   |  \ \\   --. |  |"
-        puts"`--`--`--' `--`--'`--'   `--'`--'`----'`--'"
+        puts"               Welcome to".colorize(:magenta)
+        puts"                         ,--.          ,--.".colorize(:light_blue)
+        puts",--,--,--. ,--,--.,--.--.|  |,-. ,---. |  |".colorize(:light_blue)
+        puts"|        |' ,-.  ||  .--'|     /| .-. :|  |".colorize(:light_blue)
+        puts"|  |  |  |\ '-'  ||  |   |  \ \\   --. |  |".colorize(:light_blue)
+        puts"`--`--`--' `--`--'`--'   `--'`--'`----'`--'".colorize(:light_blue)
     end
+
+                                                                
+
 
     #get user input
     def user_input 
         sleep(1)
-        puts "Please enter your Markel username:"
+        puts "Please enter your Markel username:".colorize(:yellow).underline
         gets.chomp
     end
      
@@ -29,12 +32,12 @@ class Interface
   
     #show the menu 
     def show_menu
-      prompt.select("What would you like to do?") do |menu|
-        menu.choice "Create Order", -> {self.create_order}
-        menu.choice "View Order", -> {self.view_order}
-        menu.choice "Update Order", -> {self.update_order}
-        menu.choice "Delete Order", -> {self.delete_order}
-        menu.choice "Exit", -> {self.exit}
+      prompt.select("What would you like to do?".colorize(:light_blue).underline) do |menu|
+        menu.choice "Create Order".colorize(:yellow), -> {self.create_order}
+        menu.choice "View Order".colorize(:yellow), -> {self.view_order}
+        menu.choice "Update Order".colorize(:yellow), -> {self.update_order}
+        menu.choice "Delete Order".colorize(:yellow), -> {self.delete_order}
+        menu.choice "Exit".colorize(:white), -> {self.exit}
     end
   end
   
@@ -71,7 +74,8 @@ class Interface
    def exit
 
     sleep(1)
-    puts "Bye #{customer.customer_name}! Thanks for visiting!"
+    `say "Bye, have a great day!"`
+    puts "Bye #{customer.customer_name}! Thanks for visiting!".colorize(:magenta)
   end
   
  end
