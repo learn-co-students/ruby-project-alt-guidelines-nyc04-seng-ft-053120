@@ -1,32 +1,98 @@
 class Resource < ActiveRecord::Base
     #has_many :userresources
     has_many :users, through: :userresources
+    has_many :userresources
     
     def self.new_search
-        #system "clear"
+        system "clear"
         puts "New Search"
         
-        # boroughs = self.all.map do |input|
-        #     input.borough
+        boroughs = self.all.map do |input|
+            input.borough
+        end
         
         #borough finder
-        found_boro = TTY::Prompt.new.select("Please select a Borough to search by:") do |menu|
-            menu.choice "Brookyln"#, -> {self.brooklyn}
-            menu.choice "Bronx"#, -> {self.search_by_practicioner}
-            menu.choice "Manhattan"#, -> {self.search_by_practicioner}
-            menu.choice "Queens"#, -> {self.search_by_practicioner}
-            menu.choice "Staten Island"#, -> {self.search_by_practicioner}
-            menu.choice "Return to the Main Menu"#, -> #{Interface.main_menu}
+        boro = TTY::Prompt.new.select("Please select a Borough to search by:") do |menu|
+            menu.choice "Brookyln", -> {self.brooklyn}
+            menu.choice "Bronx", -> {self.bronx}
+            menu.choice "Manhattan", -> {self.manhattan}
+            menu.choice "Queens", -> {self.queens}
+            menu.choice "Staten Island", -> {self.statenisland}
+            menu.choice "Return to the Main Menu", -> {Interface.main_menu}
         end
-
-        # found_borough = Resource.find_by(borough: found_boro)
-        #     if found_borough
-        #         return found_borough
-        #     else
-        #         puts "There are no practicioners in your Borough. Please try another Borough."
-        # end
+    end
+    
+    def self.brooklyn
+        system "clear"
+        puts ""
+        arg = Resource.where(borough: "Brookyln")
+        # puts "#{arg}"
+        #arg.map do |a|
+        puts "Here are the available practicioners in Brooklyn #{a}"
+        #     #Resource.borough.all
+       # arg.map do |doc|
+          #puts ""
     end
 end
+
+#     def self.bronx
+#         system "clear"
+#             puts ""
+#             arg = Resource.where(borough: "Bronx")
+#             puts "Here are the available practicioners in Bronx"
+#             arg.map do |doc|
+#                 puts doc.name
+#                 puts ""
+#             end
+#         end
+#     end
+
+#     def self.manhattan
+#         system "clear"
+#         puts ""
+#         arg = Resource.where(borough: "Manhattan")
+#             puts "Here are the available practicioners in Manhattan"
+#         arg.map do |doc|
+#             puts doc.name
+#             puts ""
+#         end
+#     end
+
+#     def self.queens
+#         system "clear"
+#         puts ""
+#         arg = Resource.where(borough: "Queens")
+#         puts "Here are the available practicioners in Queens"
+#         arg.map do |doc|
+#             puts doc.name
+#             puts ""
+#         end
+#     end
+
+#     def self.statenisland
+#         system "clear"
+#         puts ""
+#         arg = Resource.where(borough: "Staten Island")
+#         puts "Here are the available practicioners in Staten Island"
+#         arg.map do |doc|
+#             puts doc.name
+#             puts ""
+#         end
+#     end
+# end
+        
+    
+        
+        #bklyn
+        # bklyn = Resource.find_by(borough: "Brooklyn")
+        # return bklyn
+    #         return found_borough
+    #     # else
+    #     #     puts "There are no practicioners in your Borough. Please try another Borough."
+        
+     
+    
+
 
 
 
