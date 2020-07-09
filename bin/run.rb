@@ -14,4 +14,3 @@ interface.main_menu
 
 # #new_login.new_user_or_returning_user
 
-puts "hello world"
