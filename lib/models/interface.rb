@@ -74,7 +74,7 @@ class Interface
    def exit
 
     sleep(1)
-    `say "Bye, have a great day!"`
+    `say "Goodbye, thank you for shopping at Markel!"`
     puts "Bye #{customer.customer_name}! Thanks for visiting!".colorize(:magenta)
   end
   
