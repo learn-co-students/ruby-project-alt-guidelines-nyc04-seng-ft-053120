@@ -1,5 +1,4 @@
 class Resource < ActiveRecord::Base
-    #has_many :userresources
     has_many :users, through: :userresources
     has_many :userresources
     
@@ -10,7 +9,6 @@ class Resource < ActiveRecord::Base
         boroughs = self.all.map do |input|
             input.borough
         end
-        
         #borough finder
         boro = TTY::Prompt.new.select("Please select a Borough to search by:") do |menu|
             menu.choice "Brooklyn", -> {self.provider("Brooklyn")}
@@ -20,19 +18,23 @@ class Resource < ActiveRecord::Base
             menu.choice "Staten Island", -> {self.provider("Staten Island")}
             menu.choice "Return to the Main Menu", -> {Interface.main_menu}
         end
-        
-
     end
     
     def self.provider(borough_name)
-        #system "clear"
-        puts ""
+        system "clear"
+        # puts ""
         arg = Resource.all.select {|resource| resource[:borough] == borough_name}
         puts "Here are the available practitioners in #{borough_name}"
         provider_names = arg.map do |provider|     
-            {"#{provider[:name]} | #{provider[:practitioner]} | #{provider[:borough]} | #{provider[:url]}" => provider.id}
-            #add to a separate method    
+          {"#{provider[:name]} | #{provider[:practitioner]} | #{provider[:location]} | #{provider[:url]}" => provider.id}
+        #   new_resource = provider_names.split.last  
+        #   self.userresources << Resource.where(id:new_resource)   
         end
+
+
+
+
+
 
        # if !provider_names.empty?     
             provider_id = TTY::Prompt.new.select('Select a provider', provider_names)      
@@ -44,11 +46,11 @@ class Resource < ActiveRecord::Base
         #end
     end
 
-    def self.create_record(provider)
-        #record = self.create(user_id: self.id, resource_id: provider.id, borough: provider[:borough], practitioner: provider[:practitioner] )
-        new_ur = Userresource.create(user_id: self.id, resource_id: provider.id, borough:  provider[:borough], practitioner: provider[:practitioner])
-        puts "Record created"
-        record 
-    end
+    # def self.create_record(provider)
+    #     #record = self.create(user_id: self.id, resource_id: provider.id, borough: provider[:borough], practitioner: provider[:practitioner] )
+    #     new_ur = Userresource.create(user_id: self.id, resource_id: provider.id, borough:  provider[:borough], practitioner: provider[:practitioner])
+    #     puts "Record created"
+    #     record 
+    # end
 end
 

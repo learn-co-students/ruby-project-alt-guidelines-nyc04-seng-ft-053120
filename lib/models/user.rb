@@ -2,7 +2,11 @@ class User < ActiveRecord::Base
     belongs_to :userresources
     has_many :resources, through: :userresources 
 
+    @@current_user = nil
 
+    def self.current_user
+        @@current_user
+    end
     #self.create_new_user
     def self.create_new_user
         prompt = TTY::Prompt.new
@@ -22,24 +26,16 @@ class User < ActiveRecord::Base
         puts "Welcome #{user}, name #{name}, living in #{boro} we hope you find what you need! :sunglasses:"
     end
     
-#User                       
-    #if returning user -> user signs in using username and password
-        #returning user inputs username and password
-        #verifies if username and password combo is correct
-             #if not correct-prompts user to reenter username or password again
-            
-             #if correct - logs returning user in 
-
-    #self.returning_user
     def self.returning_user
     prompt = TTY::Prompt.new 
     username_of_the_user = prompt.ask("Please enter your username:")
     password_of_the_user = prompt.ask("Please enter your password:")
     found_user = User.find_by(username: username_of_the_user, password: password_of_the_user)
          if found_user
-             return found_user
+            @@current_user = found_user  
+            return found_user
          else
-             puts " Sorry, that username and password combo is incorrect. Please reenter."
+             puts "Sorry, that username and password combo is incorrect. Please reenter."
         end
     end
 end
