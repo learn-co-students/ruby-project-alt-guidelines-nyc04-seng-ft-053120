@@ -7,11 +7,11 @@ class Interface
     end
 
     def greeting
-        puts "Welcome to the NYC Mental Resources App!"
+        puts "Welcome To The NYC Mental Resources App!"
     end
 
     def new_user_or_returning_user
-        answer = prompt.select("Are you a returning user or a new user?", [
+        answer = prompt.select("Are You A Returning User Or A New User?", [
                 "New User",
                  "Returning User"
              ])
@@ -24,18 +24,18 @@ class Interface
     
     def main_menu
         system "clear"
-        puts "Welcome to the NYC Mental Services App #{User.current_user.name}!"
-        prompt.select("What would you like to do?") do |menu|
-            menu.choice "Create a new search", -> {Resource.new_search}
-            menu.choice "View saved resources", -> {self.view_saved_userresource} #another way to name class methods?
-            menu.choice "Delete a saved resource", -> {self.delete_userresource}
-            menu.choice "Logout", -> {self.logout}
+        puts "Welcome To The NYC Mental Health Resource Finder App #{User.current_user.name}!"
+        prompt.select("What Would You Like To Do?") do |menu|
+            menu.choice "Add A Free NYC Mental Health Practitioner To Account", -> {Resource.new_search}
+            menu.choice "View Saved Resources", -> {self.view_saved_userresource} #another way to name class methods?
+            menu.choice "Delete Saved Resources", -> {self.delete_userresource}
+            menu.choice "Logout", -> {self.goodbye}
         end
     end
 
     def new_search
         system "clear"
-        self.prompt.select("Please select a Borough to search by:") do |menu|
+        self.prompt.select("Please Select A Borough To Search By:") do |menu|
             menu.choice "Brookyln", -> {Resources.borough}
             menu.choice "Bronx", -> {Resources.borough}
             menu.choice "Manhattan", -> {Resources.borough}
@@ -45,13 +45,13 @@ class Interface
         end
     end
 
-    def create_new_userresource
-        borough_name = Resource.new_search
-        provider = Resource.provider(borough_name)
-        record = Userresource.create_record(provider)
-        puts "Your record has been created"
-        main_menu
-    end
+    # def create_new_userresource
+    #     borough_name = Resource.new_search
+    #     provider = Resource.provider(borough_name)
+    #     record = Userresource.create_record(provider)
+    #     puts "Your Record Has Been Created"
+    #     main_menu
+    # end
 
     # def view_saved_userresource
     #     system "clear"
@@ -61,8 +61,7 @@ class Interface
 
     # #self.delete_userresource
 
-    # def self.logout
-    #     puts "Thank you. Please come again"
-    #     exit!
-    # end
+    def self.goodbye
+        puts "Thank you. Please come again"
+    end
 end

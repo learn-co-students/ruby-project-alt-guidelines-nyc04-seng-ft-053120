@@ -13,57 +13,54 @@ userresource_2 = Userresource.create(user_id: 124, resource_id: 456, borough: "M
 userresource_3 = Userresource.create(user_id: 125, resource_id: 789, borough: "Staten Island", practitioner: "She" )
 
 
-resource_1 = Resource.create(name: "Dr. Sarah Glovesman", practitioner: "Psychologist", location: Faker::Address.street_address, borough: "Brooklyn", url: Faker::Internet.url )
-resource_2 = Resource.create(name: "Dr. Rei Samuels", practitioner: "Psychiatrist", location: Faker::Address.street_address, borough: "Manhattan", url: Faker::Internet.url )
-resource_3 = Resource.create(name: "Dr. Gene Williams", practitioner: "Social Worker", location: Faker::Address.street_address,  borough: "Bronx", url: Faker::Internet.url )
-resource_5 = Resource.create(name: "Dr. Sam Glosman", practitioner: "Psychologist", location: Faker::Address.street_address, borough: "Queens", url: Faker::Internet.url )
-resource_6 = Resource.create(name: "Dr. Robert Linden", practitioner: "Psychiatrist", location: Faker::Address.street_address, borough: "Brooklyn", url: Faker::Internet.url )
-resource_7 = Resource.create(name: "Dr. Genesis Brown", practitioner: "Social Worker", location: Faker::Address.street_address, borough: "Manhattan", url: Faker::Internet.url )
-resource_8 = Resource.create(name: "Dr. Rob G", practitioner: "Psychologist", location: Faker::Address.street_address, borough: "Bronx", url: Faker::Internet.url )
-resource_9 = Resource.create(name: "Dr. Mike Khan", practitioner: "Psychiatrist", location: Faker::Address.street_address, borough: "Staten Island", url: Faker::Internet.url )
-resource_10 = Resource.create(name: "Dr. Merritt Lubin", practitioner: "Social Worker", location: Faker::Address.street_address, borough: "Staten Island", url: Faker::Internet.url )
+resource_1 = Resource.create(name: Faker::Name.name, practitioner: "Psychologist", location: Faker::Address.street_address, borough: "Brooklyn", url: Faker::Internet.url )
+resource_2 = Resource.create(name: Faker::Name.name, practitioner: "Psychiatrist", location: Faker::Address.street_address, borough: "Manhattan", url: Faker::Internet.url )
+resource_3 = Resource.create(name: Faker::Name.name, practitioner: "Social Worker", location: Faker::Address.street_address,  borough: "Bronx", url: Faker::Internet.url )
+resource_5 = Resource.create(name: Faker::Name.name, practitioner: "Psychologist", location: Faker::Address.street_address, borough: "Queens", url: Faker::Internet.url )
+resource_6 = Resource.create(name: Faker::Name.name, practitioner: "Psychiatrist", location: Faker::Address.street_address, borough: "Brooklyn", url: Faker::Internet.url )
+resource_7 = Resource.create(name: Faker::Name.name, practitioner: "Social Worker", location: Faker::Address.street_address, borough: "Manhattan", url: Faker::Internet.url )
+resource_8 = Resource.create(name: Faker::Name.name, practitioner: "Psychologist", location: Faker::Address.street_address, borough: "Bronx", url: Faker::Internet.url )
+resource_9 = Resource.create(name: Faker::Name.name, practitioner: "Psychiatrist", location: Faker::Address.street_address, borough: "Staten Island", url: Faker::Internet.url )
+resource_10 = Resource.create(name: Faker::Name.name, practitioner: "Social Worker", location: Faker::Address.street_address, borough: "Staten Island", url: Faker::Internet.url )
+resource_12 = Resource.create(name: Faker::Name.name, practitioner: "Psychologist", location: Faker::Address.street_address, borough: "Brooklyn", url: Faker::Internet.url )
+resource_12 = Resource.create(name: Faker::Name.name, practitioner: "Psychiatrist", location: Faker::Address.street_address, borough: "Manhattan", url: Faker::Internet.url )
+resource_13 = Resource.create(name: Faker::Name.name, practitioner: "Social Worker", location: Faker::Address.street_address,  borough: "Bronx", url: Faker::Internet.url )
+resource_15 = Resource.create(name: Faker::Name.name, practitioner: "Psychologist", location: Faker::Address.street_address, borough: "Queens", url: Faker::Internet.url )
+resource_16 = Resource.create(name: Faker::Name.name, practitioner: "Psychiatrist", location: Faker::Address.street_address, borough: "Brooklyn", url: Faker::Internet.url )
+resource_17 = Resource.create(name: Faker::Name.name, practitioner: "Social Worker", location: Faker::Address.street_address, borough: "Manhattan", url: Faker::Internet.url )
+resource_18 = Resource.create(name: Faker::Name.name, practitioner: "Psychologist", location: Faker::Address.street_address, borough: "Bronx", url: Faker::Internet.url )
+resource_21 = Resource.create(name: Faker::Name.name, practitioner: "Psychologist", location: Faker::Address.street_address, borough: "Brooklyn", url: Faker::Internet.url )
+resource_22 = Resource.create(name: Faker::Name.name, practitioner: "Psychiatrist", location: Faker::Address.street_address, borough: "Manhattan", url: Faker::Internet.url )
+resource_23 = Resource.create(name: Faker::Name.name, practitioner: "Social Worker", location: Faker::Address.street_address,  borough: "Bronx", url: Faker::Internet.url )
+resource_25 = Resource.create(name: Faker::Name.name, practitioner: "Psychologist", location: Faker::Address.street_address, borough: "Queens", url: Faker::Internet.url )
+resource_26 = Resource.create(name: Faker::Name.name, practitioner: "Psychiatrist", location: Faker::Address.street_address, borough: "Brooklyn", url: Faker::Internet.url )
+resource_27 = Resource.create(name: Faker::Name.name, practitioner: "Social Worker", location: Faker::Address.street_address, borough: "Manhattan", url: Faker::Internet.url )
+resource_28 = Resource.create(name: Faker::Name.name, practitioner: "Psychologist", location: Faker::Address.street_address, borough: "Bronx", url: Faker::Internet.url )
+resource_29 = Resource.create(name: Faker::Name.name, practitioner: "Psychiatrist", location: Faker::Address.street_address, borough: "Staten Island", url: Faker::Internet.url )
+resource_30 = Resource.create(name: Faker::Name.name, practitioner: "Social Worker", location: Faker::Address.street_address, borough: "Staten Island", url: Faker::Internet.url )
+resource_32 = Resource.create(name: Faker::Name.name, practitioner: "Psychologist", location: Faker::Address.street_address, borough: "Brooklyn", url: Faker::Internet.url )
+resource_132 = Resource.create(name: Faker::Name.name, practitioner: "Psychiatrist", location: Faker::Address.street_address, borough: "Manhattan", url: Faker::Internet.url )
+resource_133 = Resource.create(name: Faker::Name.name, practitioner: "Social Worker", location: Faker::Address.street_address,  borough: "Bronx", url: Faker::Internet.url )
+resource_153 = Resource.create(name: Faker::Name.name, practitioner: "Psychologist", location: Faker::Address.street_address, borough: "Queens", url: Faker::Internet.url )
+resource_163 = Resource.create(name: Faker::Name.name, practitioner: "Psychiatrist", location: Faker::Address.street_address, borough: "Brooklyn", url: Faker::Internet.url )
+resource_173 = Resource.create(name: Faker::Name.name, practitioner: "Social Worker", location: Faker::Address.street_address, borough: "Manhattan", url: Faker::Internet.url )
+resource_183 = Resource.create(name: Faker::Name.name, practitioner: "Psychologist", location: Faker::Address.street_address, borough: "Bronx", url: Faker::Internet.url )
+resource_133 = Resource.create(name: Faker::Name.name, practitioner: "Psychologist", location: Faker::Address.street_address, borough: "Brooklyn", url: Faker::Internet.url )
+resource_244 = Resource.create(name: Faker::Name.name, practitioner: "Psychiatrist", location: Faker::Address.street_address, borough: "Manhattan", url: Faker::Internet.url )
+resource_39 = Resource.create(name: Faker::Name.name, practitioner: "Social Worker", location: Faker::Address.street_address,  borough: "Bronx", url: Faker::Internet.url )
+resource_599 = Resource.create(name: Faker::Name.name, practitioner: "Psychologist", location: Faker::Address.street_address, borough: "Queens", url: Faker::Internet.url )
+resource_699 = Resource.create(name: Faker::Name.name, practitioner: "Psychiatrist", location: Faker::Address.street_address, borough: "Brooklyn", url: Faker::Internet.url )
+resource_799 = Resource.create(name: Faker::Name.name, practitioner: "Social Worker", location: Faker::Address.street_address, borough: "Manhattan", url: Faker::Internet.url )
+resource_899 = Resource.create(name: Faker::Name.name, practitioner: "Psychologist", location: Faker::Address.street_address, borough: "Bronx", url: Faker::Internet.url )
+resource_999 = Resource.create(name: Faker::Name.name, practitioner: "Psychiatrist", location: Faker::Address.street_address, borough: "Staten Island", url: Faker::Internet.url )
+resource_109 = Resource.create(name: Faker::Name.name, practitioner: "Social Worker", location: Faker::Address.street_address, borough: "Staten Island", url: Faker::Internet.url )
+resource_129 = Resource.create(name: Faker::Name.name, practitioner: "Psychologist", location: Faker::Address.street_address, borough: "Brooklyn", url: Faker::Internet.url )
+resource_1266 = Resource.create(name: Faker::Name.name, practitioner: "Psychiatrist", location: Faker::Address.street_address, borough: "Manhattan", url: Faker::Internet.url )
+resource_1366 = Resource.create(name: Faker::Name.name, practitioner: "Social Worker", location: Faker::Address.street_address,  borough: "Bronx", url: Faker::Internet.url )
+resource_1566 = Resource.create(name: Faker::Name.name, practitioner: "Psychologist", location: Faker::Address.street_address, borough: "Queens", url: Faker::Internet.url )
+resource_1677 = Resource.create(name: Faker::Name.name, practitioner: "Psychiatrist", location: Faker::Address.street_address, borough: "Brooklyn", url: Faker::Internet.url )
+resource_1777 = Resource.create(name: Faker::Name.name, practitioner: "Social Worker", location: Faker::Address.street_address, borough: "Manhattan", url: Faker::Internet.url )
+resource_1877 = Resource.create(name: Faker::Name.name, practitioner: "Psychologist", location: Faker::Address.street_address, borough: "Bronx", url: Faker::Internet.url )
 
-
-# 3.times do
-#     Resource.create(
-#         name: Faker::Name.name,
-#         practitioner: "Psychiatrist",
-#         location: Faker::Address.street_address,
-#         borough: "Brooklyn",
-#         url: Faker::Internet.url
-#     )
-#     Resource.create(
-#         name: Faker::Name.name,
-#         practitioner: "Psychologist",
-#         location: Faker::Address.street_address,
-#         borough: "Brooklyn",
-#         url: Faker::Internet.url
-#     )
-#     Resource.create(
-#         name: Faker::Name.name,
-#         practitioner: "Counselor",
-#         location: Faker::Address.street_address,
-#         borough: "Brooklyn",
-#         url: Faker::Internet.url
-#     )
-#     Userresource.create(
-#         user_id: rand(1..10),
-#         resource_id: rand(1..10),
-#         borough: "Staten Island",
-#         practitioner: "Psychiatrist"
-#     )
-#     Userresource.create(
-#         user_id: rand(1..10),
-#         resource_id: rand(1..10),
-#         borough: "Staten Island",
-#         practitioner: "Psychologist"
-#     )
-#     Userresource.create(
-#         user_id: rand(1..10),
-#         resource_id: rand(1..10),
-#         borough: "Staten Island",
-#         practitioner: "Counselor"
-#     )
-# end
- puts "done seeding :bug:" 
+ puts "done seeding" 
 

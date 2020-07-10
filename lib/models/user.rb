@@ -7,35 +7,34 @@ class User < ActiveRecord::Base
     def self.current_user
         @@current_user
     end
-    #self.create_new_user
+    
     def self.create_new_user
         prompt = TTY::Prompt.new
-        user = prompt.ask("What do you want your username to be?")
-        pass = prompt.ask("What do you want your password to be?")
-        name = prompt.ask("Enter your first name:")
-        age = prompt.ask("How old are you?")
-        boro = prompt.select("What borough do you live in?") do |menu|
+        user = prompt.ask("What Would You Like Your Username To Be?")
+        pass = prompt.ask("What Would You Like Your Password To Be?")
+        name = prompt.ask("Please Enter Your First Name:")
+        age = prompt.ask("Please Enter Your Age:")
+        boro = prompt.select("What Borough Do You Live In?") do |menu|
             menu.choice 'Brooklyn'
             menu.choice 'Bronx'
             menu.choice 'Manhattan'
             menu.choice 'Staten Island'
             menu.choice 'Queens'
             end
-
-        User.create(username: user, password: pass, age: age, borough:boro)
-        puts "Welcome #{user}, name #{name}, living in #{boro} we hope you find what you need! :sunglasses:"
+        new_user = User.create(username: user, password: pass, age: age, borough:boro)
+        @@current_user = new_user
     end
     
     def self.returning_user
     prompt = TTY::Prompt.new 
-    username_of_the_user = prompt.ask("Please enter your username:")
-    password_of_the_user = prompt.ask("Please enter your password:")
+    username_of_the_user = prompt.ask("Please Enter Your Username:")
+    password_of_the_user = prompt.ask("Please Enter Your Password:")
     found_user = User.find_by(username: username_of_the_user, password: password_of_the_user)
          if found_user
             @@current_user = found_user  
             return found_user
          else
-             puts "Sorry, that username and password combo is incorrect. Please reenter."
+             puts "Sorry, That Username And Password Combo Is Incorrect. Please Try Again."
         end
     end
 end
