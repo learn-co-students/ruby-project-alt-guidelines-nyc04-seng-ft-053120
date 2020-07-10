@@ -213,14 +213,25 @@ class Interface
     project_name_input = prompt.ask("♥ Enter new project's name: ")
     project_description_input = prompt.ask("♥ Enter a short description: ")
 
-    new_project = user.create_new_project(project_name_input, project_description_input)
-    @user = new_project.user
-    puts "\nNew project: \"#{new_project.name}\", has been successfully created!\n"
+    user_ownerships = Ownership.where(user: user)
+    already_owned_project = user_ownerships.find { |ownership| ownership.project.name == project_name_input }
+    
+    if already_owned_project
+      puts "\nSorry, you already have a project with the same name"
+      prompt.select(" ", cycle: true) do |menu|
+        menu.choice "Try Again", -> { create_a_new_project_page }
+        menu.choice "Add a Collaborator to My Project", -> { add_collaborator_page(new_project) }
+      end
+    else
+      new_project = user.create_new_project(project_name_input, project_description_input)
+      @user = new_project.user
+      puts "\nNew project: \"#{new_project.name}\", has been successfully created!\n"
 
-    prompt.select(" ", cycle: true) do |menu|
-      menu.choice "Add a Collaborator to My Project", -> { add_collaborator_page(new_project) }
-      menu.choice "Take Me To Project Menu", -> { project_menu_page(new_project) }
-      menu.choice "Go Back to Main Menu", -> { main_menu }
+      prompt.select(" ", cycle: true) do |menu|
+        menu.choice "Add a Collaborator to My Project", -> { add_collaborator_page(new_project) }
+        menu.choice "Take Me To Project Menu", -> { project_menu_page(new_project) }
+        menu.choice "Go Back to Main Menu", -> { main_menu }
+      end
     end
   end
 
